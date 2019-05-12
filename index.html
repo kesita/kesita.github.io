@@ -286,6 +286,600 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/12/kesita/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="科斯塔的学习私塾">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rua！">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/12/kesita/" class="post-title-link" itemprop="url">Untitled</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-05-12 11:04:58" itemprop="dateCreated datePublished" datetime="2019-05-12T11:04:58+08:00">2019-05-12</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<p>title: kesita<br>date: 2019-05-11 16:34:36<br>tags:<br>—#Linux高级命令进阶</p>
+<ul>
+<li><p>重定向 &gt; 与 追加重定向 &gt;&gt;<br>  ○ &gt; 将输出结果写入到文件中（覆盖保存，原来的内容就没了）<br>  ○ &gt;&gt;  将输出结果写入到文件中（保留原内容并追加在文件最后面）<br>  ○ 所有有输出结果的指令都能通过重定向写入文件，如：</p>
+<pre><code>echo hello &gt; 123    将hello写入文件
+ls ~/123 &gt; 123       将123目录下的文件列表写入文件
+</code></pre><p>  ○ &amp;&gt;:标准和错误输出共同写入文件，会覆盖。<br>  ○ &amp;&gt;&gt;:标准和错误输出共同写入文件，追加输出，不覆盖。</p>
+</li>
+<li><p>输入重定向（不常用）<br>  &lt;</p>
+</li>
+<li><p>管道符<br>  前面命令输出的结果，交给后面的命令继续处理</p>
+<pre><code>cat /etc/passwd | wc -l
+-21 
+</code></pre></li>
+<li><p>通配符<br>  *： 表示匹配0或者多个<br>  ？： 表示匹配单个字符,该字符必须存在<br>  [0-9]: 表示匹配0-9之间的一个数字</p>
+<pre><code>[123]: 表示匹配1或者2或者3
+</code></pre><p>  [a-z]: 表示匹配a-z之间的一个字母</p>
+<pre><code>[abc]: 表示匹配a或者b或者c
+</code></pre><p>  [0-9a-z]：匹配到一个字符，是数字或小写字母</p>
+</li>
+<li><p>引号的作用<br>  单引号：所见即所得<br>  双引号：解释变量<br>  反引号：执行命令<br>  如： name = <code>ls</code>    加反引号name=ls输出的内容 不加反引号就是name=ls</p>
+<pre><code>&apos; $name &apos;输出  $name
+&quot; $name &quot;输出   xxx （ls的输出）
+[root@costa ~] name=costa
+[root@costa ~] echo &quot;this is $name&quot;
+this is costa
+[root@costa ~] echo &apos;this is $name&apos;
+this is $name
+</code></pre><p>  反引号使用：两条命令变成一条命令</p>
+<pre><code>[root@costa ~]which ehco
+/user/bin/ehco
+[root@costa ~]rpm -pf /user/bin/ehco
+
+[root@costa ~]rpm-pf `which ehco`
+</code></pre></li>
+<li><p>软硬连接<br> 软连接：ln -s 源文件 目标文件</p>
+<pre><code>删除连接文件对源文件无影响
+删除源文件连接文件失效
+修改源文件连接文件也会跟着变
+修改连接文件源文件也会跟着变
+源文件被删除后在创建同名源文件，连接文件自动连接
+</code></pre><p>硬链接：ln  源文件 目标文件</p>
+<pre><code>删除源文件连接文件不会失效
+删除连接文件源文件无影响
+修改源文件连接文件也会跟着变
+修改连接文件源文件也会跟着变
+</code></pre></li>
+<li>Linux磁盘系统<br>  /root: root用户家目录<br>  /home/用户名: 普通用户家目录<br>  /var: 放置经常变动的文件如日志<br>  /etc 放置服务程序的配置文件<br>  /usr/local 用户自定义程序的安装位置<br>  /tmp: 共享临时文件的目录<br>  /bin，/sbin: 放置二进制命令<br>  /mnt,/media： 挂载光盘<br>  /dev: 磁盘设备</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/11/costa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="科斯塔的学习私塾">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rua！">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/11/costa/" class="post-title-link" itemprop="url">costa</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-05-11 16:30:31" itemprop="dateCreated datePublished" datetime="2019-05-11T16:30:31+08:00">2019-05-11</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-12 11:05:14" itemprop="dateModified" datetime="2019-05-12T11:05:14+08:00">2019-05-12</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>#Linux常用命令详解</p>
+<ul>
+<li><p>命令的基本格式：<br>命令 【选项】 【参数】<br>  ○ 选项的特征是有个-  选项可以在它的参数前面也可以在参数后面，如：</p>
+<pre><code>touch 文件名 -m    
+touch -m 文件名    
+</code></pre><p>   效果是一样的<br>  ○ 一条命令可以同时使用多个选项，有时也可以不使用选项<br>  ○ 选项分为短命令（如-r）选项和长命令选项（–all）。短命令选项可以写在一起。但是长命令选项不能和短选项命令写在一起。</p>
+</li>
+<li><p>ls命令        (list)      显示目录下所有文件和目录的列表，也可用于查看文件信息<br>  ○ 详细可查看网址：<a href="http://man.linuxde.net/ls" target="_blank" rel="noopener">http://man.linuxde.net/ls</a><br>  ○ -l：长输出——以长格式显示目录下的内容列表。输出的信息从左到右依次包括:文件类型、权限模式、硬连接数、拥有者（owner）、组（group）、文件大小（size）、文件的创建时间和文件名。如：</p>
+<pre><code>-rw-r--r--   1 root root  174 5月  10 19:52 db.json
+drwxr-xr-x  10 root root 4.0K 5月  10 14:12 hexo-theme
+</code></pre><p>  ○ less ：ls内容太多时需要进行翻页时使用<br>  ○ ls后面的参数可以为多个：</p>
+<pre><code>§ 例1：ls -l 文件1 文件2 显示文件1和文件2的文件信息
+§ 例2：ls 目录1 目录2 分别展示两个目录下的文件列表
+</code></pre><p>  ○ -d（directory）列出目录本身，并不包含目录中的文件：</p>
+<pre><code>[root@ken ~]# ls -d /root
+/root
+</code></pre><p>  ○-a（all）不隐藏任何以. 开始的项目：<br>  [root@ken ~]# ls -a /root<br>.<br>.bash_logout<br>k<br>.pki<br>.viminfo<br>..<br>.bash_profile<br>keys.sh<br>.ssh</p>
+</li>
+<li><p>man命令<br>查看帮助，如 <code>man ls</code>查看ls的帮助（有忘记命令的地方就man它！）<br>在命令后面加–help也可以查看帮助！</p>
+</li>
+<li><p>clear命令<br>清屏，也可以按<code>Ctrl+L</code><br>停止命令运行是<code>Ctrl+C</code></p>
+</li>
+<li><p>cd命令(change directory) 进入指定的目录<br>  ○ 进入根目录：cd /<br>  ○ 进入家目录：cd或者cd ~（家目录：/home/用户名）<br>  ○ 返回上一层：cd ..（.表示当前目录，..表示上一级目录）<br>  ○ 返回刚才所处的目录 cd -<br>####补充内容：<br>  相对路径：不以根目录开头的路径  如：<code>cd home</code><br>  绝对路径：以根目录 / 开头的路径  如：<code>cd /home</code></p>
+</li>
+</ul>
+<ul>
+<li><p>pwd命令     （print working directory）     显示当前绝对路径：</p>
+<pre><code>[root@localhost:~/桌面/hexo]  pwd
+/root/桌面/hexo
+</code></pre></li>
+<li><p>mkdir命令   make directories    创建目录<br>  ○ -m  在建立目录时设置权限<br>  ○ -p   可同时建立多层目录，如：<code>mkdir  mulu1/mulu2</code></p>
+</li>
+</ul>
+<ul>
+<li><p>echo命令    用于输出指定的字符串<br>  ○ 例：echo hello  终端会输出一个hello<br>  ○ -e   加了-e后可以使用\a \e等给字符加特效如变色等</p>
+<blockquote>
+<p>####小脚本time：给输出的字符串加特效</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!bin/bash</span><br><span class="line">for num in &#123;2..7&#125;</span><br><span class="line">do</span><br><span class="line">        echo -e &quot;\033[3$&#123;num&#125;mhello world\033[0m&quot;</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>touch命令    创建新的空文件或修改文件的访问时间和修改时间<br>  ○ -a  只更改访问时间<br>  ○ -m 只更改修改时间<br>  ○ -r   将B文件的时间改为和A相同 例：<code>touch -r A B</code><br>  ○ -t   指定时间而非将现在时刻写入 例：<code>touch wenjian -t 201806032130</code><br>  ○ –help 帮助（所有指令应该都能用这个选项）<br>  ○ –version 版本<br>  ○ <code>touch file{1..100}</code> 创建100个文件</p>
+</li>
+</ul>
+<ul>
+<li><p>cp命令       copy      复制文件或目录，可创建副本并为它命名或复制到某目录下<br>  ○ -r          归操作，对文件夹进行操作（-r，-R都可以）<br>  ○ -i        在覆盖是询问是否执行<br>  ○ -f            强制执行不进行询问<br>  ○ -a        复制时，保持文件的结构和属性。等同于-dpr（preseve）<br>  ○- p        保持文件属性不变</p>
+</li>
+<li><p>mv命令      move     移动并重命名<br>  ○ 如果目标文件是目录文件，源文件会被移到此目录下，且文件名不变<br>  ○ 如果目标文件是普通文件或不存在的文件，则为重命名操作<br>  ○ 如果移动多个文件，最后一个文件一定是已存在的目录文件<br>  ○ -b：当文件存在时，覆盖前，为其创建一个备份；<br>  ○ -f：不询问强制执行<br>  ○ -i：覆盖前询问<br>  ○ –strip-trailing-slashes：删除源文件中的斜杠“/”；<br>  ○ -S&lt;后缀&gt;：为备份文件指定后缀，而不使用默认的后缀；<br>  ○ –target-directory=&lt;目录&gt;：指定源文件要移动到目标目录；<br>  ○ -u：当源文件比目标文件新或者目标文件不存在时，才执行移动操作。<br>  ○ 例：将wjj2目录下的所有文件移动至wjj目录<br>  mv wjj2/<em> wjj （</em>表示目录中的所有文件）<br>  ○ 将wjj2目录直接剪切到wjj目录下 :<code>mv wjj2/* wjj</code></p>
+</li>
+<li><p>rm命令      remove<br>  ○ -d：直接把欲删除的目录的硬连接数据删除成0，删除该目录；<br>  ○ -f：强制删除文件或目录；<br>  ○ -i：删除已有文件或目录之前先询问用户；<br>  ○ -r或-R：递归处理，将指定目录下的所有文件与子目录一并处理；</p>
+</li>
+<li><p>cat命令         查看文件内容<br>  ○ -n：由1开始对所有输出的行数编号；<br>  ○ -b：和-n相似，只不过对于空白行不编号；<br>  ○ -s：当遇到有连续两行以上的空白行，就代换为一行的空白行；<br>  ○ -A：显示不可打印字符，行尾显示“$”；<br>  ○ tac命令：反向输出文件内容</p>
+</li>
+</ul>
+<p>###- 查看文件的几个命令<br>     cat 查看比较小的文件内容<br>     more 一口气加载出整个文件，只能往下翻，底部会显示已读百分比<br>     less 不一次加载整个文件，可以上翻下翻，不显示百分比</p>
+<ul>
+<li><p>head和tail<br>  ○ head  -n  数字  文件名<br>  输出文件的前n行 不加-n就是默认前10行<br>  ○ tail  -n  数字  文件名<br>  输出文件的最后n行（默认10行）<br>  -f: 当文件增长时,输出后续添加的数据(持续刷新，按Ctrl+c退出)<br>  -f 选项经常用于监控日志文件进行排错</p>
+</li>
+<li><p>alias<br>  ○ 设置，查看别名<br>  ○ 查看：alias<br>  ○ 设置：alias  “rm = rm -i”<br>  ○ 取消：unalias rm</p>
+</li>
+<li><p>uname<br>-a： 显示输出系统信息<br>只需要记住 uname -r 是查看内核版本号 这个命令在安装某些软件时会用到</p>
+<p>更改主机名的命令<br>  ○ hostname 新名字 #立即生效，关机失效<br>  ○ hostnamectl set-hostname  #立即生效，永久生效。</p>
+</li>
+<li><p>history 查看历史命令<br>  ○ 可以输入 ! 字母 再次执行某条命令<br>  ○ 如：历史中有 </p>
+<pre><code>1    unalias
+2    ls
+3    uname
+</code></pre><p>  则输入 ! u 等于执行uname ， ! 2 等于执行ls</p>
+</li>
+</ul>
+<ul>
+<li><p>which 显示命令的完整路径<br>主要是为了查看命令是依赖哪个软件的</p>
+</li>
+<li><p>wc 统计命令<br>  ○ -c 统计字符数（并不准确） 如：</p>
+<pre><code>ehco “this is nanake” | wc -c
+15
+printf “this is nanake” | wc -c  （准确）
+16
+</code></pre></li>
+</ul>
+<ul>
+<li>w：显示当前用户信息</li>
+<li>who：显示已经登录主机的用户</li>
+<li>whoami：显示当前的用户</li>
+</ul>
+<ul>
+<li><p>ping: 测试主机在线<br>  -c（count）: 包的数量<br>  -i（intervel）: 间隔时间<br>  -w（wait）: 超时等待时间</p>
+<blockquote>
+<p>####小脚本time：批量检测当前用户在线情况</p>
+</blockquote>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">.  /etc/init.d/functions</span><br><span class="line">ip=192.168.9.</span><br><span class="line">for I in &#123;1..255&#125;   </span><br><span class="line">				if  ping -c 1 -w 1 $ip$i &amp;&gt;/dev/null;then</span><br><span class="line">	                          echo -n &quot;$ip$i&quot;</span><br><span class="line">	                          success</span><br><span class="line"> 		                          echo &quot; &quot;</span><br><span class="line">			   else</span><br><span class="line">							 echo -n &quot;$ip$i&quot;</span><br><span class="line">  	                          failure</span><br><span class="line">   	                         echo &quot; &quot;</span><br><span class="line">  	      	   fi</span><br><span class="line"></span><br><span class="line">    done</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>bash test_host.sh</p>
+<ul>
+<li><p>kill: 终止进程<br>  -9：强制终止       <del>~~PID (唯一标识一个进程)</del>~~</p>
+<pre><code>[root@ken ~]# ps 
+  PID TTY          TIME CMD
+23790 pts/4    00:00:00 bash
+24269 pts/4    00:00:00 ps
+
+[root@ken ~]# kill -9 23790（PID）
+Connection closed by foreign host.
+Disconnected from remote host(172.20.10.6) at 13:11:32.
+</code></pre></li>
+</ul>
+<ul>
+<li><p>du: 查看文本大小（实际大小）<br>  -s: 查看目录总大小<br>  -h: 人类易读<br>   <code>ls -lh</code>   查询的是文件的实际大小<br>  <code>du -sh</code>查看的是文件占磁盘的大小（最小占空间4K）</p>
+</li>
+<li><p>df: 查看磁盘使用情况（查看挂载点）<br>  -h: 人类易读</p>
+</li>
+<li><p>free: 查看内存使用情况<br>  -h: 人类易读<br>  -m:以M为单位显示<br>  -s:  刷新显示</p>
+</li>
+<li><p>date: 查看和设置系统时间<br>  -s: 设置时间<br>  查看时可以指定格式：<br>  %Y:年<br>  %m:月<br>  %d:日<br>  %H:时<br>  %M:分<br>  %S:秒<br>  %F:年-月-日<br>  %T:时：分：秒<br>  指定格式示例：date “+%F %T”<br>  注意有个加号↑<br>  显示的时间为：2019-05-08 14:49:01</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/10/yui/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="科斯塔的学习私塾">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rua！">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/10/yui/" class="post-title-link" itemprop="url">yui</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-05-10 19:52:30" itemprop="dateCreated datePublished" datetime="2019-05-10T19:52:30+08:00">2019-05-10</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/10/miaomiaomiao/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1064,7 +1658,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
