@@ -629,7 +629,7 @@
                 
               
 
-              <time title="Created: 2019-05-13 19:37:46 / Modified: 19:38:18" itemprop="dateCreated datePublished" datetime="2019-05-13T19:37:46+08:00">2019-05-13</time>
+              <time title="Created: 2019-05-13 19:37:46 / Modified: 19:59:03" itemprop="dateCreated datePublished" datetime="2019-05-13T19:37:46+08:00">2019-05-13</time>
             
 
             
@@ -690,7 +690,7 @@
 5 Mon May 13 10:15:00 2019 a root
 6 Mon May 13 10:15:00 2019 a root
 </code></pre><p><code>atrm 5</code> 删除计划任务，加上任务前面的序列号</p>
-<p>#crontab周期性计划任务</p>
+<p> #crontab周期性计划任务</p>
 <ul>
 <li><p>第一步：检查crond是否已经启动<br>[root@ken ~]# ps aux | grep “crond”<br>root 631 0.0 0.1 126280 1592 ? Ss 08:24 0:00 /usr/sbin/crond -n</p>
 </li>
@@ -729,7 +729,7 @@
 </li>
 </ul>
 <figure class="highlight plain"><figcaption><span>* * * *</span><a href="/usr/bin/echo">123 >> /tmp/ken```</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">2. 删除计划任务</span><br><span class="line"> `crontab -r`  #删除所有的计划任务</span><br></pre></td></tr></table></figure>
-<p>[root@ken ~]# crontab -l</p>
+<p>[root@ken ~]# crontab -e</p>
 <ul>
 <li><ul>
 <li><ul>
@@ -748,7 +748,7 @@
 <li><ul>
 <li><ul>
 <li><ul>
-<li>/usr/bin/echo <code>date “+%F \%T”</code> &gt;&gt; /tmp/ken<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@ken ~]# crontab -r</span><br><span class="line">[root@ken ~]# crontab -l</span><br><span class="line">no crontab for root</span><br><span class="line"></span><br><span class="line">```crontab最小执行单位是分钟</span><br></pre></td></tr></table></figure>
+<li>/usr/bin/echo <code>date “+%F \%T”</code> &gt;&gt; /tmp/ken<br>[root@ken ~]# crontab -r<br>[root@ken ~]# crontab -l<br>no crontab for root<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">##*crontab最小执行单位是分钟*</span><br><span class="line"> </span><br><span class="line">[root@ken ~]# vim /etc/crontab</span><br><span class="line">SHELL=/bin/bash                              #指定shell类型</span><br><span class="line">PATH=/sbin:/bin:/usr/sbin:/usr/bin     #crontab命令执行路径</span><br><span class="line">MAILTO=root      #发送邮件到/var/spool/mail/root</span><br><span class="line"></span><br><span class="line">###*鸟哥讲几句：5个星号，4个符号*</span><br><span class="line"></span><br><span class="line">![](http://d.birdteam.net/data/f_25434698.jpg)</span><br><span class="line"></span><br><span class="line">`crontab -e`是针对用户的，如果想针对系统进行计划任务的话，</span><br><span class="line">直接用root账号去`vim /etc/crontab` 进行设置。</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -759,10 +759,8 @@
 </ul>
 </li>
 </ul>
-<p>[root@ken ~]# vim /etc/crontab<br>SHELL=/bin/bash                              #指定shell类型<br>PATH=/sbin:/bin:/usr/sbin:/usr/bin     #crontab命令执行路径<br>MAILTO=root      #发送邮件到/var/spool/mail/root</p>
-<p>###<em>鸟哥讲几句：5个星号，4个符号</em></p>
-<p><img src="http://d.birdteam.net/data/f_25434698.jpg" alt></p>
-<p><code>crontab -e</code>是针对用户的，如果想针对系统进行计划任务的话，<br>直接用root账号去<code>vim /etc/crontab</code> 进行设置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@ken ~]# vim /etc/crontab</span><br><span class="line">SHELL=/bin/bash                             #指定shell类型</span><br><span class="line">PATH=/sbin:/bin:/usr/sbin:/usr/bin          #crontab命令执行路径</span><br><span class="line">MAILTO=root                      #如果有错会发送邮件到/var/spool/mail/root</span><br><span class="line"></span><br><span class="line"># For details see man 4 crontabs</span><br><span class="line"># Example of job definition:</span><br><span class="line"># .—————- minute (0 – 59)</span><br><span class="line"># | .————- hour (0 – 23)</span><br><span class="line"># | | .———- day of month (1 – 31)</span><br><span class="line"># | | | .——- month (1 – 12) OR jan,feb,mar,apr …</span><br><span class="line"># | | | | .—- day of week (0 – 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat</span><br><span class="line"># | | | | |</span><br><span class="line"># * * * * * user-name command to be executed</span><br></pre></td></tr></table></figure></p>
+<p>[root@ken ~]# vim /etc/crontab<br>SHELL=/bin/bash                             #指定shell类型<br>PATH=/sbin:/bin:/usr/sbin:/usr/bin          #crontab命令执行路径<br>MAILTO=root                      #如果有错会发送邮件到/var/spool/mail/root</p>
+<h1 id="For-details-see-man-4-crontabs"><a href="#For-details-see-man-4-crontabs" class="headerlink" title="For details see man 4 crontabs"></a>For details see man 4 crontabs</h1><h1 id="Example-of-job-definition"><a href="#Example-of-job-definition" class="headerlink" title="Example of job definition:"></a>Example of job definition:</h1><h1 id="—————-minute-0-–-59"><a href="#—————-minute-0-–-59" class="headerlink" title=".—————- minute (0 – 59)"></a>.—————- minute (0 – 59)</h1><h1 id="————-hour-0-–-23"><a href="#————-hour-0-–-23" class="headerlink" title="| .————- hour (0 – 23)"></a>| .————- hour (0 – 23)</h1><h1 id="———-day-of-month-1-–-31"><a href="#———-day-of-month-1-–-31" class="headerlink" title="| | .———- day of month (1 – 31)"></a>| | .———- day of month (1 – 31)</h1><h1 id="——-month-1-–-12-OR-jan-feb-mar-apr-…"><a href="#——-month-1-–-12-OR-jan-feb-mar-apr-…" class="headerlink" title="| | | .——- month (1 – 12) OR jan,feb,mar,apr …"></a>| | | .——- month (1 – 12) OR jan,feb,mar,apr …</h1><h1 id="—-day-of-week-0-–-6-Sunday-0-or-7-OR-sun-mon-tue-wed-thu-fri-sat"><a href="#—-day-of-week-0-–-6-Sunday-0-or-7-OR-sun-mon-tue-wed-thu-fri-sat" class="headerlink" title="| | | | .—- day of week (0 – 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat"></a>| | | | .—- day of week (0 – 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat</h1><h1 id><a href="#" class="headerlink" title="| | | | |"></a>| | | | |</h1><h1 id="user-name-command-to-be-executed"><a href="#user-name-command-to-be-executed" class="headerlink" title="    * user-name command to be executed"></a><em> </em> <em> </em> * user-name command to be executed</h1><p><code>`</code></p>
 <p>#习题：</p>
 <ol>
 <li><p>每月1、10、22日的4:45重启network服务<br>2：每周六、周日的1:10重启network服务<br>3：每天18:00至23:00之间每隔30分钟重启network服务<br>4：每隔两天的上午8点到11点的第3和第15分钟执行一次重启<br>5：每周日凌晨2点30分，运行cp命令对/etc/fstab文件进行备份，存储位置为/backup/fstab-YYYY-MM-DD-hh-mm-ss；<br>6：一月一号的4点重启smb<br>7：晚上11点到早上7点之间，每隔一小时重启smb<br>8：每一小时重启smb</p>
