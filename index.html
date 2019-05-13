@@ -286,7 +286,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/12/kesita/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/13/权限管理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="科斯塔的学习私塾">
@@ -306,7 +306,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/05/12/kesita/" class="post-title-link" itemprop="url">kesita</a>
+                <a href="/2019/05/13/权限管理/" class="post-title-link" itemprop="url">权限管理</a>
               
             
           </h1>
@@ -331,13 +331,555 @@
                 
               
 
-              <time title="Created: 2019-05-12 12:18:07 / Modified: 12:18:34" itemprop="dateCreated datePublished" datetime="2019-05-12T12:18:07+08:00">2019-05-12</time>
+              <time title="Created: 2019-05-13 19:50:36 / Modified: 19:52:05" itemprop="dateCreated datePublished" datetime="2019-05-13T19:50:36+08:00">2019-05-13</time>
             
 
             
               
 
               
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>多用户与用户组的概念<br>由于Linux是多用户、多任务的操作系统，因此可能常常有多人同时在某台主机上工作，如果不区分用户的权限，某个人的文档所有人都能看到，非常的不安全。因此，在Linux上文件的权限设定是非常重要的。</p>
+<ol>
+<li>ls -l看到的文件权限信息<br>我们以前学过，输入ls -l或者ll 可以查看文件的详细信息，其内容如下：</li>
+</ol>
+<p>其实这里的“档案类型权限”，“档案拥有者”，“档案所属群组”三个部分就是该文件的权限信息，下面我们来依次介绍一下。</p>
+<ol>
+<li>权限的类别</li>
+</ol>
+<p>在Linux中分别有读、写、执行权限：<br>读权限：<br>　　对于目录来说，读权限影响用户是否能够列出目录结构<br>　　对于文件来说，读权限影响用户是否可以查看文件内容<br>写权限：<br>　　对于目录来说，写权限影响用户是否可以在该目录下“创建/删除/复制/移动”文档<br>　　对于文件来说，写权限影响用户是否可以编辑文件内容<br>执行权限：<br>　　对于目录来说：执行权限影响用户是否可以执行cd操作<br>　　对于文件来说，特别是脚本文件，执行权限影响文件是否可以运行<br>除了这三个普通权限以外，还有三个特殊权限—— SUID, SGID, SBIT。<br>…<br>SUID<br>限定条件：只能设置在二进制可执行程序上面。对目录设置无效。<br>作用：设置此权限后，本来只对该文件有执行权限的用户，在执行该文件时，会临时获得其拥有者的权限。<br>设置方法：chmod u+s 文件名<br>注意：suid这个权限是记录在十位字符的第四位上的<br>鸟哥详解：<br>我們的 Linux 系統中，所有帳號的密碼都記錄在 /etc/shadow 這個檔案裡面，這個檔案的權限為：『———- 1 root root』，意思是這個檔案僅有root可讀且僅有root可以強制寫入而已。 既然這個檔案僅有 root 可以修改，那麼鳥哥的 dmtsai 這個一般帳號使用者能否自行修改自己的密碼呢？ 你可以使用你自己的帳號輸入『passwd』這個指令來看看，嘿嘿！一般使用者當然可以修改自己的密碼了！<br>唔！有沒有衝突啊！明明 /etc/shadow 就不能讓 dmtsai 這個一般帳戶去存取的，為什麼 dmtsai 還能夠修改這個檔案內的密碼呢？ 這就是 SUID 的功能啦！藉由上述的功能說明，我們可以知道<br>dmtsai 對於 /usr/bin/passwd 這個程式來說是具有 x 權限的，表示 dmtsai 能執行 passwd；<br>passwd 的擁有者是 root 這個帳號；<br>dmtsai 執行 passwd 的過程中，會『暫時』獲得 root 的權限；<br>/etc/shadow 就可以被 dmtsai 所執行的 passwd 所修改。<br>但如果 dmtsai 使用 cat 去讀取 /etc/shadow 時，他能夠讀取嗎？因為 cat 不具有 SUID 的權限，所以 dmtsai 執行 『cat /etc/shadow』 時，是不能讀取 /etc/shadow 的。<br>SGID<br>限定条件：可对二进制可执行程序和目录设置。<br>作用：<br>对二进制可执行文件：本来只对该文件有执行权限的用户，在执行该文件时，会临时获得其所属用户组的权限。<br>对目录文件：在设置了SGID权限的目录下建立文件时，新创建的文件的所属用户组会和该目录的所属用户组相同。<br>设置方法：chmod g+s 文件名<br>注意：sgid这个权限是记录在十位字符的第七位上的。<br>SBIT<br>限定条件：只能对目录设置。<br>作用：设置了SBIT权限的目录下，用户只能对自己创建的文件和目录进行删除/改名/移动的操作，无法删除其他用户的文件。<br>设置方法：chmod o+t 文件名<br>注意：sbit这个权限是记录在十位字符的第十位上的。<br>补充：关于文件扩展权限ACL<br>扩展ACL ：access control list<br>例：文件a.txt的权限为：- rwx r– r–<br>ken为其他人，不属于a.txt的用户组，该如何只对ken一个用户设置rwx权限？<br>答：使用扩展ACL（开后门x）命令为：setfacl -m u:ken:rwx a.txt</p>
+<ol>
+<li>用户的类别<br>· 拥有者<br>创建这个文件的用户的名字<br>· 所属用户组<br>创建这个文件的用户所属的用户组，但是拥有者的属组可能不止一个，这里记录的是它的基本组<br>· 其他人<br>除去上面提到的那些人剩余的所有用户<br>设置读写权限——chmod命令</li>
+<li>通过字母设置<br>命令<br>给谁设置<br>分配方式<br>参数<br>chmod<br>u：拥有者<br>g：用户组<br>o：其他人<br>a：所有人（a可省略）<br>+：添加权限<br>-：删除权限<br>=：参数填啥就有啥权限<br>r：读<br>w：写<br>x：执行<br>示例：<br>给ken文件设置权限，对 拥有者 添加 执行权限：chmod u+x ken<br>给ken文件设置权限，对 用户组 去掉 写权限：chmod g-w ken<br>给ken文件设置权限，对 所有人 设置 读写权限：chmod =rw ken 或 chmod a=rw ken</li>
+<li>通过数字设置<br>将r，w，x三种权限与数字进行对应：<br>类型<br>对应值<br>r<br>4<br>w<br>2<br>x<br>1<br>-<br>0<br>然后，用三位数字分别表示拥有者，用户组，其他人的权限，如766表示：<br>拥有者：4+2+1=7 拥有读，写，执行权限<br>用户组：4+2=6 拥有读，写，没有执行权限<br>其他人：4+2=6 拥有读，写，没有执行权限<br>使用数字进行设置时需注意：一般写和读是配对出现的，有读权限可以没有写，但有写权限的一般会有读权限，所以请注意不要出现2，3之类的数字！（1是会有的，比如目录的其他人权限一般就是1）<br>补充：通过四位数设置特殊权限，只设置普通权限的话是用3位数字，如果想设置特殊类型的话，可以在最左边再加一位，用来设置特殊类型，对应数值如下：<br>| 类型 | 对应值 |<br>| —– | —–|<br>| SUID | 4 |<br>| SGID | 2 |<br>| SBIT | 1 |<br>如：chmod 4755 test<br>此时文件test的权限为：- rws r-x r-x<br>可见SUID权限设置成功~<br>设置拥有者和用户组</li>
+<li>改变拥有者——chown命令<br>格式：chown [-R] 新的拥有者名：新的用户组名 在操作的文件名<br>-R 表示对目录下的所有文件进行操作<br>如果你不想更改用户组，冒号和用户组名不用写<br>例如：将test.txt文件的拥有者改为doge<br>答案：chown doge test.txt</li>
+<li>改变所属用户组——chgrp命令<br>格式：chgrp [-R] 新的所属用户组名 在操作的文件名<br>-R 表示对目录下的所有文件进行操作<br>例如：将文件test.txt的用户组更改为nimei<br>答案：chgrp nimei test.txt<br>其实此命令用的很少，因为使用chown也能够更改用户组。<br>3.最后，sudo命令<br>作用：来以其他身份来执行命令，预设的身份为root<br>sudo配置文件：/etc/sudoers<br>该文件为只读，请使用visudo命令进行修改。</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/13/yui/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="科斯塔的学习私塾">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rua！">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/13/yui/" class="post-title-link" itemprop="url">Untitled</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-05-13 19:47:04" itemprop="dateCreated datePublished" datetime="2019-05-13T19:47:04+08:00">2019-05-13</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>用户与用户组<br>用户管理相关文件<br>/etc/passwd：记录用户基本信息<br>       格式：<br>       账号:密码（只显示一个x）:用户id:用户组id:描述:家目录位置:shell类型<br>       shell类型分为：<br>       可以登录系统的/bin/bash<br>       无法登录系统的/sbin/nologin<br>/etc/shadow：记录用户密码信息、过期时间等<br>       用户名:加密成乱码的密码:从1970.1.1到上次修改密码的时间:密码最短使用时间（0表示不限制）:密码最长有效期（99999表示不限制）:密码到期前几天开始提醒:密码到期后的宽限时间:密码过期时间:空的保留字段<br>/etc/group：记录用户组信息<br>       组名:密码（只有x）:组id: 【用户1, 用户2..】<br>       主组和附加组<br>       在Linux系统中创建每个用户时，将自动创建一个与其同名的基本用户组，而且这个基本用户组只有该用户一个人。如果该用户以后被归纳入其他用户组，则这个其他用户组称之为扩展用户组。一个用户只有一个基本用户组，但是可以有多个扩展用户组。<br>/etc/gshadow：记录用户组密码<br>       组名：密码：管理员：组员信息<br>       现在又sudo等方便的指令，群组管理员已经很少使用了。<br>/etc/default/useradd：使用useradd创建用户时的默认参数在此文件中配置<br>文件内容详解：<br>   GROUP=100       表示可创建普通组[1]<br>   HOME=/home       用户的家目录建在哪里<br>   INACTIVE=-1       是否启用帐号过期停权，-1表示不启用，自然数表示宽限的天数<br>   EXPIRE=              帐号终止日期，空表示不启用<br>   SHELL=/bin/bash       SHELL类型，用户可否登录<br>   SKEL=/etc/skel       从哪里复制家目录文件<br>   CREATE_MAIL_SPOOL=yes       是否创建用户邮件缓冲，yes表示创建<br>/etc/skel/：用户家目录模板，创建目录时在用户家目录中的三个隐藏文件就是从这里复制的<br>/etc/login.defs：全局用户设定信息[2]<br>[1] GROUP=100：新建帳號的初始群組使用 GID 為 100 者<br>系統上面 GID 為 100 者即是 users 這個群組，此設定項目指的就是讓新設使用者帳號的初始群組為 users 這一個的意思。 但是我們知道 CentOS 上面並不是這樣的，在 CentOS 上面預設的群組為與帳號名相同的群組。 舉例來說， vbird1 的初始群組為 vbird1 。怎麼會這樣啊？這是因為針對群組的角度有兩種不同的機制所致， 這兩種機制分別是：<br>私有群組機制：<br>系統會建立一個與帳號一樣的群組給使用者作為初始群組。 這種群組的設定機制會比較有保密性，這是因為使用者都有自己的群組，而且家目錄權限將會設定為 700 (僅有自己可進入自己的家目錄) 之故。使用這種機制將不會參考 GROUP=100 這個設定值。代表性的 distributions 有 RHEL, Fedora, CentOS 等；<br>公共群組機制：<br>就是以 GROUP=100 這個設定值作為新建帳號的初始群組，因此每個帳號都屬於 users 這個群組， 且預設家目錄通常的權限會是『 drwxr-xr-x … username users … 』，由於每個帳號都屬於 users 群組，因此大家都可以互相分享家目錄內的資料之故。代表 distributions 如 SuSE等。<br>[2] 关于login.defs文件<br>在系统创建新用户时，除了参考useradd文件中的参数默认值以外，还会参考login.defs文件中的一些全局的用户设定参数信息,该文件的内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">MAIL_DIR/var/spool/mail  &lt;==使用者預設郵件信箱放置目錄</span><br><span class="line">PASS_MAX_DAYS   99999&lt;==/etc/shadow 內的第 5 欄，多久需變更密碼日數</span><br><span class="line">PASS_MIN_DAYS   0&lt;==/etc/shadow 內的第 4 欄，多久不可重新設定密碼日數</span><br><span class="line">PASS_MIN_LEN5&lt;==密碼最短的字元長度，已被 pam 模組取代，失去效用！</span><br><span class="line">PASS_WARN_AGE   7&lt;==/etc/shadow 內的第 6 欄，過期前會警告的日數</span><br><span class="line">UID_MIN  1000&lt;==使用者最小的 UID，意即小於 1000 的 UID 為系統保留</span><br><span class="line">UID_MAX 60000&lt;==使用者能夠用的最大 UID</span><br><span class="line">SYS_UID_MIN   201&lt;==保留給使用者自行設定的系統帳號最小值 UID</span><br><span class="line">SYS_UID_MAX   999&lt;==保留給使用者自行設定的系統帳號最大值 UID</span><br><span class="line">GID_MIN  1000&lt;==使用者自訂群組的最小 GID，小於 1000 為系統保留</span><br><span class="line">GID_MAX 60000&lt;==使用者自訂群組的最大 GID</span><br><span class="line">SYS_GID_MIN   201&lt;==保留給使用者自行設定的系統帳號最小值 GID</span><br><span class="line">SYS_GID_MAX   999&lt;==保留給使用者自行設定的系統帳號最大值 GID</span><br><span class="line">CREATE_HOME yes  &lt;==在不加 -M 及 -m 時，是否主動建立使用者家目錄？</span><br><span class="line">UMASK   077  &lt;==使用者家目錄建立的 umask ，因此權限會是 700</span><br><span class="line">USERGROUPS_ENAB yes  &lt;==使用 userdel 刪除時，是否會刪除初始群組</span><br><span class="line">ENCRYPT_METHOD SHA512&lt;==密碼加密的機制使用的是 sha512 這一個機制！</span><br></pre></td></tr></table></figure></p>
+<p>可见，文件中规定了uid的取值范围，密码的有效期和最小长度等参数，还有是否在执行useradd时自动建立家目录、使用userdel删除用户时是否删除等选项的默认值。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/13/dogee/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="科斯塔的学习私塾">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rua！">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/13/dogee/" class="post-title-link" itemprop="url">dogee</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-05-13 19:37:46 / Modified: 19:38:18" itemprop="dateCreated datePublished" datetime="2019-05-13T19:37:46+08:00">2019-05-13</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p> #at一次性计划任务</p>
+<ul>
+<li><p>安装at<br>yum install at -y</p>
+</li>
+<li><p>启动at服务<br>systemctl restart  atd</p>
+</li>
+<li><p>设置at一次性计划任务</p>
+</li>
+</ul>
+<p>####举个栗子：</p>
+<blockquote>
+<p>10:05的时候再tmp下创建一个ken文件<br>[root@localhost:~] at 10:05<br>at&gt; touch /tmp/ken<br>at&gt; ＜EOT＞&#8195;&#8195;      &#8195;        &#8195;      &#8195; #按ctrl d进行保存<br>    job 2 at Mon May 13 10:05:00 2019</p>
+</blockquote>
+<p>查看计划任务的两种方式：<br><code>at -l</code>或者<code>atq</code></p>
+<p>再次查看计划任务发现计划任务为空<br>at一次性计划任务执行完成之后自动退出</p>
+<p>删除计划任务：</p>
+<pre><code>[root@localhost:~]atq
+5 Mon May 13 10:15:00 2019 a root
+6 Mon May 13 10:15:00 2019 a root
+</code></pre><p><code>atrm 5</code> 删除计划任务，加上任务前面的序列号</p>
+<p>#crontab周期性计划任务</p>
+<ul>
+<li><p>第一步：检查crond是否已经启动<br>[root@ken ~]# ps aux | grep “crond”<br>root 631 0.0 0.1 126280 1592 ? Ss 08:24 0:00 /usr/sbin/crond -n</p>
+</li>
+<li><p>第二步：启动crond<br>systemctl restart crond</p>
+</li>
+<li><p>第三步：查看计划任务<br>crontab -l</p>
+</li>
+</ul>
+<p>###再举一些栗子：打印时间至costa</p>
+<ul>
+<li><p>监控ken文件</p>
+<ul>
+<li>[root@ken ~]# <code>tail -f /tmp/ken</code></li>
+</ul>
+</li>
+<li><p>编写计划任务</p>
+<ul>
+<li>[root@ken ~]# crontab -e<br><code>* * * * * /usr/bin/echo 123 &gt;&gt; /tmp/ken</code></li>
+</ul>
+</li>
+<li><p>保存<br>就是使用vim打开了一个文件，正常wq保存即可</p>
+</li>
+<li><p>查看计划任务</p>
+<ul>
+<li>[root@ken ~]# <code>crontab -l</code><br><code>* * * * * /usr/bin/echo 123 &gt;&gt; /tmp/ken</code></li>
+</ul>
+</li>
+<li><p>查看执行结果</p>
+<ul>
+<li>[root@ken ~]# <code>tail -f /tmp/ken</code><br>123<br>123</li>
+</ul>
+</li>
+<li>删除计划任务：<ul>
+<li>注释掉不想执行的计划任务</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><figcaption><span>* * * *</span><a href="/usr/bin/echo">123 >> /tmp/ken```</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">2. 删除计划任务</span><br><span class="line"> `crontab -r`  #删除所有的计划任务</span><br></pre></td></tr></table></figure>
+<p>[root@ken ~]# crontab -l</p>
+<ul>
+<li><ul>
+<li><ul>
+<li><ul>
+<li><ul>
+<li>/usr/bin/echo 123 &gt;&gt; /tmp/ken</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><ul>
+<li><ul>
+<li>/usr/bin/echo <code>date “+%F \%T”</code> &gt;&gt; /tmp/ken<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@ken ~]# crontab -r</span><br><span class="line">[root@ken ~]# crontab -l</span><br><span class="line">no crontab for root</span><br><span class="line"></span><br><span class="line">```crontab最小执行单位是分钟</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>[root@ken ~]# vim /etc/crontab<br>SHELL=/bin/bash                              #指定shell类型<br>PATH=/sbin:/bin:/usr/sbin:/usr/bin     #crontab命令执行路径<br>MAILTO=root      #发送邮件到/var/spool/mail/root</p>
+<p>###<em>鸟哥讲几句：5个星号，4个符号</em></p>
+<p><img src="http://d.birdteam.net/data/f_25434698.jpg" alt></p>
+<p><code>crontab -e</code>是针对用户的，如果想针对系统进行计划任务的话，<br>直接用root账号去<code>vim /etc/crontab</code> 进行设置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@ken ~]# vim /etc/crontab</span><br><span class="line">SHELL=/bin/bash                             #指定shell类型</span><br><span class="line">PATH=/sbin:/bin:/usr/sbin:/usr/bin          #crontab命令执行路径</span><br><span class="line">MAILTO=root                      #如果有错会发送邮件到/var/spool/mail/root</span><br><span class="line"></span><br><span class="line"># For details see man 4 crontabs</span><br><span class="line"># Example of job definition:</span><br><span class="line"># .—————- minute (0 – 59)</span><br><span class="line"># | .————- hour (0 – 23)</span><br><span class="line"># | | .———- day of month (1 – 31)</span><br><span class="line"># | | | .——- month (1 – 12) OR jan,feb,mar,apr …</span><br><span class="line"># | | | | .—- day of week (0 – 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat</span><br><span class="line"># | | | | |</span><br><span class="line"># * * * * * user-name command to be executed</span><br></pre></td></tr></table></figure></p>
+<p>#习题：</p>
+<ol>
+<li><p>每月1、10、22日的4:45重启network服务<br>2：每周六、周日的1:10重启network服务<br>3：每天18:00至23:00之间每隔30分钟重启network服务<br>4：每隔两天的上午8点到11点的第3和第15分钟执行一次重启<br>5：每周日凌晨2点30分，运行cp命令对/etc/fstab文件进行备份，存储位置为/backup/fstab-YYYY-MM-DD-hh-mm-ss；<br>6：一月一号的4点重启smb<br>7：晚上11点到早上7点之间，每隔一小时重启smb<br>8：每一小时重启smb</p>
+<pre><code>&lt;!-- more --&gt;
+
+&lt;!-- more --&gt;
+
+&lt;!-- more --&gt;
+
+&lt;!-- more --&gt;
+</code></pre></li>
+</ol>
+<p>#答案：<br>1.45 4 1,10,22 <em> </em> /usr/bin/systemctl restart networ<br>2.10 1 <em> </em> 6,7 /usr/bin/systemctl restart network<br>3.<em>/30 18-23 </em> <em> </em> /usr/bin/systemctl restart network<br>4.3,15 8-11 <em>/2 </em> <em> /usr/sbin/reboot<br>5.30 2 </em> <em> 7 /usr/bin/cp /etc/fstab /tmp/fstab-<code>date “+\%F_\%T”</code><br>6.正确答案; 0 4 1 1 </em> /usr/bin/systemctl restart smb   #4点钟只执行一次命令<br>错误答案：<em> 4 1 1 </em> /usr/bin/systemctl restart smb   #四点钟执行了60次命令<br>7.0 23-0/1,1-7/1 <em> </em> <em> /usr/bin/systemctl restart smb<br>0 23,1,3,5,7  </em> <em> </em> /usr/bin/systemctl restart smb<br>8.0 <em> </em> <em> </em> /usr/bin/systemctl restart smb</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/12/kesita/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="科斯塔的学习私塾">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rua！">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/12/kesita/" class="post-title-link" itemprop="url">Untitled</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-05-12 13:37:49" itemprop="dateCreated datePublished" datetime="2019-05-12T13:37:49+08:00">2019-05-12</time>
+            
+
             
           </span>
 
@@ -385,12 +927,15 @@ ls ~/123 &gt; 123       将123目录下的文件列表写入文件
 <pre><code>cat /etc/passwd | wc -l
 -21 
 </code></pre></li>
-<li><p>通配符<br>  *： 表示匹配0或者多个<br>  ？： 表示匹配单个字符,该字符必须存在<br>  [0-9]: 表示匹配0-9之间的一个数字</p>
-<pre><code>[123]: 表示匹配1或者2或者3
-</code></pre><p>  [a-z]: 表示匹配a-z之间的一个字母</p>
-<pre><code>[abc]: 表示匹配a或者b或者c
-</code></pre><p>  [0-9a-z]：匹配到一个字符，是数字或小写字母</p>
-</li>
+</ul>
+<blockquote>
+<p>####小脚本time：(目前还不太明白如何操作)</p>
+</blockquote>
+<p>怎么统计访问网址的前5个ip<br><code>cat  /var/log/httpd/access_log |  awk -F “ ” &#39;{printy $1}&#39; | sort  | uniq -c  | sort -rn |  head -1</code></p>
+<ul>
+<li>通配符<br>  *： 表示匹配0或者多个<br>  ？： 表示匹配单个字符,该字符必须存在<br>  [0-9]: 表示匹配0-9之间的一个数字<pre><code>[123]: 表示匹配1或者2或者3
+</code></pre>  [a-z]: 表示匹配a-z之间的一个字母<pre><code>[abc]: 表示匹配a或者b或者c
+</code></pre>  [0-9a-z]：匹配到一个字符，是数字或小写字母</li>
 <li><p>引号的作用<br>  单引号：所见即所得<br>  双引号：解释变量<br>  反引号：执行命令<br>  如： name = <code>ls</code>    加反引号name=ls输出的内容 不加反引号就是name=ls</p>
 <pre><code>&apos; $name &apos;输出  $name
 &quot; $name &quot;输出   xxx （ls的输出）
@@ -420,6 +965,186 @@ this is $name
 </code></pre></li>
 <li>Linux磁盘系统<br>  /root: root用户家目录<br>  /home/用户名: 普通用户家目录<br>  /var: 放置经常变动的文件如日志<br>  /etc 放置服务程序的配置文件<br>  /usr/local 用户自定义程序的安装位置<br>  /tmp: 共享临时文件的目录<br>  /bin，/sbin: 放置二进制命令<br>  /mnt,/media： 挂载光盘<br>  /dev: 磁盘设备</li>
 </ul>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/12/miaomiaomiao/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="科斯塔的学习私塾">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rua！">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/12/miaomiaomiao/" class="post-title-link" itemprop="url">miaomiaomiao</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-05-12 13:04:35" itemprop="dateCreated datePublished" datetime="2019-05-12T13:04:35+08:00">2019-05-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-13 19:40:49" itemprop="dateModified" datetime="2019-05-13T19:40:49+08:00">2019-05-13</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>#vim简单操作指南</p>
+<ol>
+<li>vim编辑器<br> 三种模式：<pre><code>命令模式（普通模式）
+输入模式（编辑模式）
+末行模式
+</code></pre></li>
+<li>模式之间的切换<br> 命令模式–&gt;输入模式（a,i,o）<br> 输入模式–&gt;命令模式（esc）<br> 命令模式–&gt;末行模式（：）<br> 末行模式–&gt;命令模式（esc）</li>
+<li><p>命令模式下的常用操作<br> yy: 复制，nyy就是复制n行<br> p: 粘贴<br> dd: 剪切<br> dG: 删除光标所在行到末尾的全部行<br> u: 撤销（等于Windows的ctrl+z）<br> ctrl+r：恢复（等于Windows的ctrl+y）<br> G：跳转到最后一行<br> nG： 跳转到第n行，如1G就是跳转到首行<br> home: 跳转到行首<br> end: 跳转到行尾<br> pgup: 上翻一页,或者ctrl+f<br> pgdn: 下翻一页，或者ctrl+b<br> /: 查找</p>
+<pre><code>n: 从上往下查找
+N：从下往上查找
+</code></pre></li>
+<li><p>末行模式下的操作<br> q: 退出<br> w: 保存<br> wq: 保存并退出<br> q!: 强制退出<br> wq!: 保存并强制退出</p>
+<p> 跳转至n行：冒号 行号<br> 缩进：<br> set ai：自动缩进<br> set noai：不自动缩进<br> set tabstop=n：设置缩进，tab为n个空格</p>
+<p> r /文件路径/文件a ：导入文件a的内容到当前的文件中<br> w /路径/文件名 ：将当前文件另存为</p>
+<p> set nu: 显示行号<br> set nonu： 不显示行号<br> nohl: 取消高亮<br> set hls:打开高亮</p>
+<p> 1,3 d: 删除1-3行内容<br> 1，3 m 5: 移动1,3内容至5行下<br> 1,3 co 5: 复制1,3内容至5行下</p>
+<p> 替换：<br> 格式：行号起,行号止 s/源字符/替换内容/g (g是global的意思，表示全部替换)<br> 如果不加g每行只有符合条件的第一段文字会被替换<br> 其中，/可以被各种符号替代，只要统一就行，如：<br> 将文件中全部的/替换为+<br> :% s@/@+@g<br> 全局替换：<br> 1，$ s///g或者% s///g<br> 示例：<br> % s/^/#/g: 在每行的行首添加#<br> % s/$/#/g: 在每行的行尾添加#<br> % s/^#//g：删除行首的#<br> % s/#$//g: 删除行尾的#</p>
+<p> ^：表示行首<br> $：表示行尾</p>
+</li>
+<li><p>vim配置文件<br> 全局配置：/etc/vimrc<br> 个人配置：~/.vimrc(默认不存在，需要自己手动创建)</p>
+</li>
+<li><p>崩溃缓存文件<br> 遇到意外情况时，vim会保存一个.原文件名.swp的文件<br> 在下次编辑此文件时，会提示你是否需要恢复备份<br> ※恢复：可以 按R键 查看备份文件，wq保存，再用rm命令删除备份文件，或者使用 vim -r 原文件名 查看备份文件<br> ※不想恢复：可以按Q键先退出编辑，用rm命令删除备份文件即可（命令为： rm -f .文件名.swp ）</p>
+</li>
+<li><p>分屏操作<br> vim -o： 水平分屏<br> vim -O: 垂直分屏<br> ctrl+w: 切换文件</p>
+</li>
+</ol>
 
           
         
@@ -745,352 +1470,6 @@ Disconnected from remote host(172.20.10.6) at 13:11:32.
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/10/yui/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="科斯塔的学习私塾">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="rua！">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/10/yui/" class="post-title-link" itemprop="url">yui</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-05-10 19:52:30" itemprop="dateCreated datePublished" datetime="2019-05-10T19:52:30+08:00">2019-05-10</time>
-            
-
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/10/miaomiaomiao/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="科斯塔的学习私塾">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="rua！">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/10/miaomiaomiao/" class="post-title-link" itemprop="url">miaomiaomiao</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-05-10 19:44:34 / Modified: 19:47:16" itemprop="dateCreated datePublished" datetime="2019-05-10T19:44:34+08:00">2019-05-10</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><p>命令的基本格式：<br>命令 【选项】 【参数】<br>  ○ 选项的特征是有个-  选项可以在它的参数前面也可以在参数后面，如：<br>  touch 文件名 -m 和 touch -m 文件名效果是一样的<br>  ○ 一条命令可以同时使用多个选项，有时也可以不使用选项<br>  ○ 选项分为短命令（如-r）选项和长命令选项（–all）短命令选项可以写在一起<br>  ○ 以下笔记仅为基础用法，对选项的说明不完整，需要请自行百度</p>
-</li>
-<li><p>man命令<br>查看帮助，如 man ls 查看ls的帮助（不一定每个命令都好使）<br>也可以在命令后面加–help选项查看帮助</p>
-</li>
-<li><p>clear命令<br>清屏，也可以按Ctrl+L</p>
-</li>
-<li><p>cd命令        change directory        进入指定的目录<br>  ○ 进入根目录：cd /<br>  ○ 进入家目录：cd回车或者cd ~（家目录：/home/用户名）<br>  ○ 返回上一层：cd ..（.表示当前目录，..表示上一级目录）<br>  ○ 返回刚才所处的目录 cd -</p>
-</li>
-<li><p>pwd命令     print work directory     显示当前绝对路径<br>补充内容：<br>  相对路径：不以根目录开头的路径  如：cd home<br>  绝对路径：以根目录 / 开头的路径  如：cd /home</p>
-</li>
-<li><p>ls命令        list       显示目录下所有文件和目录的列表，也可用于查看文件信息<br>  ○ 详细可查看网址：<a href="http://man.linuxde.net/ls" target="_blank" rel="noopener">http://man.linuxde.net/ls</a><br>  ○ -l：以长格式显示目录下的内容列表。输出的信息从左到右依次包括文件名，文件类型、权限模式、硬连接数、所有者、组、文件大小和文件的最后修改时间等<br>  ○ |less ：ls内容太多需要翻页时使用<br>  ○ ls后面的参数可以为多个：</p>
-<pre><code>§ 例1：ls -l 文件1 文件2 显示文件1和文件2的文件信息
-§ 例2：ls 目录1 目录2 分别展示两个目录下的文件列表
-</code></pre></li>
-<li><p>cat命令         查看文件内容<br>  ○ -n：有1开始对所有输出的行数编号；<br>  ○ -b：和-n相似，只不过对于空白行不编号；<br>  ○ -s：当遇到有连续两行以上的空白行，就代换为一行的空白行；<br>  ○ -A：显示不可打印字符，行尾显示“$”；<br>  ○ tac命令：反向输出文件内容</p>
-</li>
-<li><p>touch命令    创建新的空文件或修改文件的访问时间和修改时间<br>  ○ -a  只更改访问时间<br>  ○ -m 只更改修改时间<br>  ○ -r   将B文件的时间改为和A相同 例：touch -r A B<br>  ○ -t   指定时间而非将现在时刻写入 例：touch wenjian -t 201806032130<br>  ○ –help 帮助（所有指令应该都能用这个选项）<br>  ○ –version 版本<br>  ○ touch file{1..100}</p>
-</li>
-<li><p>mkdir命令   make directories    创建目录<br>  ○ -m  在建立目录时设置权限<br>  ○ -p   可同时建立多层目录，如：mkdir  mulu1/mulu2</p>
-</li>
-<li><p>cp命令       copy      复制文件或目录，可创建副本并为它命名或复制到某目录下<br>  ○ -r    递归操作，对文件夹进行操作（大写R似乎也行）<br>  ○ -I    在覆盖是询问是否执行<br>  ○ -f    强制执行不进行询问</p>
-</li>
-<li><p>mv命令      move     移动并重命名<br>  ○ 如果目标文件是目录文件，源文件会被移到此目录下，且文件名不变<br>  ○ 如果目标文件是普通文件或不存在的文件，则为重命名操作<br>  ○ 如果移动多个文件，最后一个文件一定是已存在的目录文件<br>  ○ -b：当文件存在时，覆盖前，为其创建一个备份；<br>  ○ -f：不询问强制执行<br>  ○ -i：覆盖前询问<br>  ○ –strip-trailing-slashes：删除源文件中的斜杠“/”；<br>  ○ -S&lt;后缀&gt;：为备份文件指定后缀，而不使用默认的后缀；<br>  ○ –target-directory=&lt;目录&gt;：指定源文件要移动到目标目录；<br>  ○ -u：当源文件比目标文件新或者目标文件不存在时，才执行移动操作。<br>  ○ 例：将wjj2目录下的所有文件移动至wjj目录<br>  mv wjj2/<em> wjj （</em>表示目录中的所有文件）<br>  ○ 将wjj2目录直接剪切到wjj目录下 mv wjj2/* wjj </p>
-</li>
-<li><p>rm命令      remove<br>  ○ -d：直接把欲删除的目录的硬连接数据删除成0，删除该目录；<br>  ○ -f：强制删除文件或目录；<br>  ○ -i：删除已有文件或目录之前先询问用户；<br>  ○ -r或-R：递归处理，将指定目录下的所有文件与子目录一并处理；</p>
-</li>
-<li><p>echo命令    用于输出指定的字符串<br>  ○ 例：echo hello  终端会输出一个hello<br>  ○ -e   加了-e后可以使用\a \e等给字符加特效如变色等</p>
-</li>
-<li><p>重定向 &gt; 与 追加重定向 &gt;&gt;<br>  ○ &gt; 将输出结果写入到文件中（覆盖保存，原来的内容就没了）<br>  ○ &gt;&gt;  将输出结果写入到文件中（保留原内容并追加在文件最后面）<br>  ○ 所有有输出结果的指令都能通过重定向写入文件，如：</p>
-<pre><code>§ echo hello &gt; 123    将hello写入文件
-§ ls ~/123 &gt; 123       将123目录下的文件列表写入文件
-</code></pre></li>
-<li><p>查看文件的几个命令<br>  ○ cat 上面也说了<br>  ○ more 一口气加载出整个文件，只能往下翻，底部会显示已读百分比<br>  ○ less 不一次加载整个文件，可以上翻下翻，不显示百分比</p>
-</li>
-<li><p>head和tail<br>  ○ head  -n  数字  文件名<br>  输出文件的前n行 不加-n就是默认前10行<br>  ○ tail  -n  数字  文件名<br>  输出文件的最后n行（默认10行）<br>  -f: 当文件增长时,输出后续添加的数据(持续刷新，按Ctrl+c退出)<br>  -f 选项经常用于监控日志文件进行排错</p>
-</li>
-<li><p>alias<br>  ○ 设置，查看别名<br>  ○ 查看：alias<br>  ○ 设置：alias  “rm = rm -i”<br>  ○ 取消：unalias rm</p>
-</li>
-<li><p>uname<br>显示输出系统信息<br>只需要记住 uname -r 是查看内核版本号 这个命令在安装某些软件时会用到</p>
-</li>
-<li><p>更改主机名的命令<br>  ○ hostname 新名字 #立即生效，关机失效<br>  ○ hostnamectl set-hostname</p>
-</li>
-<li><p>history 查看历史<br>  ○ 可以输入 ! 字母 再次执行某条命令<br>  ○ 如：历史中有 </p>
-<pre><code>1    unalias
-2    ls
-3    uname
-</code></pre><p>  则输入 ! u 等于执行uname ， ! 2 等于执行ls</p>
-</li>
-<li><p>which 显示命令的路径</p>
-</li>
-<li><p>wc 统计命令<br>  ○ -c统计字符数 echo</p>
-</li>
-<li><p>ping: 测试主机在线<br>  -c: 包的数量<br>  -i: 间隔时间<br>  -w: 超时等待时间</p>
-</li>
-<li><p>kill: 终止进程<br>  kill -15/-9 PID (唯一标识一个进程)</p>
-</li>
-<li><p>du: 查看文本大小（实际大小）<br>  -s: 查看目录总大小<br>  -h: 人类易读</p>
-</li>
-<li><p>df: 查看磁盘使用情况（查看挂载点）<br>  -h: 人类易读</p>
-</li>
-<li><p>free: 查看内存使用情况<br>  -h: 人类易读<br>  -m:以M为单位显示<br>  -s:  刷新显示</p>
-</li>
-<li><p>date: 查看和设置系统时间<br>  -s: 设置时间<br>  查看时可以指定格式：<br>  %Y:年<br>  %m:月<br>  %d:日<br>  %H:时<br>  %M:分<br>  %S:秒<br>  %F:年-月-日<br>  %T:时：分：秒<br>  指定格式示例：date “+%F %T”<br>  注意有个加号↑<br>  显示的时间为：2019-05-08 14:49:01—</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/10/doge/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1136,12 +1515,24 @@ Disconnected from remote host(172.20.10.6) at 13:11:32.
                 
               
 
-              <time title="Created: 2019-05-10 19:31:09 / Modified: 19:31:58" itemprop="dateCreated datePublished" datetime="2019-05-10T19:31:09+08:00">2019-05-10</time>
+              <time title="Created: 2019-05-10 19:31:09" itemprop="dateCreated datePublished" datetime="2019-05-10T19:31:09+08:00">2019-05-10</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-13 19:50:02" itemprop="dateModified" datetime="2019-05-13T19:50:02+08:00">2019-05-13</time>
               
             
           </span>
@@ -1177,261 +1568,10 @@ Disconnected from remote host(172.20.10.6) at 13:11:32.
       
         
           
-            <h1 id="欢迎使用-Markdown在线编辑器-MdEditor"><a href="#欢迎使用-Markdown在线编辑器-MdEditor" class="headerlink" title="欢迎使用 Markdown在线编辑器 MdEditor"></a>欢迎使用 Markdown在线编辑器 MdEditor</h1><p><strong>Markdown是一种轻量级的「标记语言」</strong></p>
-<p><img src="https://www.mdeditor.com/images/logos/markdown.png" alt="markdown" title="markdown"></p>
-<p>Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。它允许人们使用易读易写的纯文本格式编写文档，然后转换成格式丰富的HTML页面，Markdown文件的后缀名便是“.md”</p>
-<h2 id="MdEditor是一个在线编辑Markdown文档的编辑器"><a href="#MdEditor是一个在线编辑Markdown文档的编辑器" class="headerlink" title="MdEditor是一个在线编辑Markdown文档的编辑器"></a>MdEditor是一个在线编辑Markdown文档的编辑器</h2><p><em>MdEditor扩展了Markdown的功能（如表格、脚注、内嵌HTML等等），以使让Markdown转换成更多的格式，和更丰富的展示效果，这些功能原初的Markdown尚不具备。</em></p>
-<blockquote>
-<p>Markdown增强版中比较有名的有Markdown Extra、MultiMarkdown、 Maruku等。这些衍生版本要么基于工具，如<del>Pandoc</del>，Pandao；要么基于网站，如GitHub和Wikipedia，在语法上基本兼容，但在一些语法和渲染效果上有改动。</p>
-</blockquote>
-<p>MdEditor源于Pandao的JavaScript开源项目，开源地址<a href="https://github.com/pandao/editor.md" title="Editor.md" target="_blank" rel="noopener">Editor.md</a>，并在MIT开源协议的许可范围内进行了优化，以适应广大用户群体的需求。向优秀的markdown开源编辑器原作者Pandao致敬。</p>
-<p><img src="https://pandao.github.io/editor.md/images/logos/editormd-logo-180x180.png" alt="Pandao editor.md" title="Pandao editor.md"></p>
-<h2 id="MdEditor的功能列表演示"><a href="#MdEditor的功能列表演示" class="headerlink" title="MdEditor的功能列表演示"></a>MdEditor的功能列表演示</h2><h1 id="标题H1"><a href="#标题H1" class="headerlink" title="标题H1"></a>标题H1</h1><h2 id="标题H2"><a href="#标题H2" class="headerlink" title="标题H2"></a>标题H2</h2><h3 id="标题H3"><a href="#标题H3" class="headerlink" title="标题H3"></a>标题H3</h3><h4 id="标题H4"><a href="#标题H4" class="headerlink" title="标题H4"></a>标题H4</h4><h5 id="标题H5"><a href="#标题H5" class="headerlink" title="标题H5"></a>标题H5</h5><h6 id="标题H5-1"><a href="#标题H5-1" class="headerlink" title="标题H5"></a>标题H5</h6><h3 id="字符效果和横线等"><a href="#字符效果和横线等" class="headerlink" title="字符效果和横线等"></a>字符效果和横线等</h3><hr>
-<p><del>删除线</del> <s>删除线（开启识别HTML标签时）</s></p>
-<p><em>斜体字</em>      <em>斜体字</em></p>
-<p><strong>粗体</strong>  <strong>粗体</strong></p>
-<p><strong><em>粗斜体</em></strong> <strong><em>粗斜体</em></strong></p>
-<p>上标：X<sub>2</sub>，下标：O<sup>2</sup></p>
-<h3 id="引用-Blockquotes"><a href="#引用-Blockquotes" class="headerlink" title="引用 Blockquotes"></a>引用 Blockquotes</h3><blockquote>
-<p>引用文本 Blockquotes</p>
-</blockquote>
-<p>引用的行内混合 Blockquotes</p>
-<blockquote>
-<p>引用：如果想要插入空白换行<code>即&lt;br /&gt;标签</code>，在插入处先键入两个以上的空格然后回车即可，<a href="https://www.mdeditor.com/" target="_blank" rel="noopener">普通链接</a>。</p>
-</blockquote>
-<h3 id="锚点与链接-Links"><a href="#锚点与链接-Links" class="headerlink" title="锚点与链接 Links"></a>锚点与链接 Links</h3><p><a href="https://www.mdeditor.com/" target="_blank" rel="noopener">普通链接</a><br><a href="https://www.mdeditor.com/" title="普通链接带标题" target="_blank" rel="noopener">普通链接带标题</a><br>直接链接：<a href="https://www.mdeditor.com" target="_blank" rel="noopener">https://www.mdeditor.com</a><br>[锚点链接][anchor-id]<br>[anchor-id]: <a href="https://www.mdeditor.com/" target="_blank" rel="noopener">https://www.mdeditor.com/</a><br><a href="mailto:test.test@gmail.com" target="_blank" rel="noopener">mailto:test.test@gmail.com</a><br>GFM a-tail link @pandao<br>邮箱地址自动链接 <a href="mailto:test.test@gmail.com" target="_blank" rel="noopener">test.test@gmail.com</a>  <a href="mailto:www@vip.qq.com" target="_blank" rel="noopener">www@vip.qq.com</a></p>
-<blockquote>
-<p>@pandao</p>
-</blockquote>
-<h3 id="多语言代码高亮-Codes"><a href="#多语言代码高亮-Codes" class="headerlink" title="多语言代码高亮 Codes"></a>多语言代码高亮 Codes</h3><h4 id="行内代码-Inline-code"><a href="#行内代码-Inline-code" class="headerlink" title="行内代码 Inline code"></a>行内代码 Inline code</h4><p>执行命令：<code>npm install marked</code></p>
-<h4 id="缩进风格"><a href="#缩进风格" class="headerlink" title="缩进风格"></a>缩进风格</h4><p>即缩进四个空格，也做为实现类似 <code>&lt;pre&gt;</code> 预格式化文本 ( Preformatted Text ) 的功能。</p>
-<pre><code>&lt;?php
-    echo &quot;Hello world!&quot;;
-?&gt;
-</code></pre><p>预格式化文本：</p>
-<pre><code>| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
-</code></pre><h4 id="JS代码"><a href="#JS代码" class="headerlink" title="JS代码"></a>JS代码</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">"Hello world!"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="图片-Images"><a href="#图片-Images" class="headerlink" title="图片 Images"></a>图片 Images</h3><p>图片加链接 (Image + Link)：</p>
-<p><a href="https://www.mdeditor.com/images/logos/markdown.png" title="markdown" target="_blank" rel="noopener"><img src="https://www.mdeditor.com/images/logos/markdown.png" alt></a></p>
-<blockquote>
-<p>Follow your heart.</p>
-</blockquote>
-<hr>
-<h3 id="列表-Lists"><a href="#列表-Lists" class="headerlink" title="列表 Lists"></a>列表 Lists</h3><h4 id="无序列表（减号）Unordered-Lists"><a href="#无序列表（减号）Unordered-Lists" class="headerlink" title="无序列表（减号）Unordered Lists (-)"></a>无序列表（减号）Unordered Lists (-)</h4><ul>
-<li>列表一</li>
-<li>列表二</li>
-<li>列表三</li>
-</ul>
-<h4 id="无序列表（星号）Unordered-Lists"><a href="#无序列表（星号）Unordered-Lists" class="headerlink" title="无序列表（星号）Unordered Lists (*)"></a>无序列表（星号）Unordered Lists (*)</h4><ul>
-<li>列表一</li>
-<li>列表二</li>
-<li>列表三</li>
-</ul>
-<h4 id="无序列表（加号和嵌套）Unordered-Lists"><a href="#无序列表（加号和嵌套）Unordered-Lists" class="headerlink" title="无序列表（加号和嵌套）Unordered Lists (+)"></a>无序列表（加号和嵌套）Unordered Lists (+)</h4><ul>
-<li>列表一</li>
-<li>列表二<ul>
-<li>列表二-1</li>
-<li>列表二-2</li>
-<li>列表二-3</li>
-</ul>
-</li>
-<li>列表三<ul>
-<li>列表一</li>
-<li>列表二</li>
-<li>列表三</li>
-</ul>
-</li>
-</ul>
-<h4 id="有序列表-Ordered-Lists"><a href="#有序列表-Ordered-Lists" class="headerlink" title="有序列表 Ordered Lists (-)"></a>有序列表 Ordered Lists (-)</h4><ol>
-<li>第一行</li>
-<li>第二行</li>
-<li>第三行</li>
-</ol>
-<h4 id="GFM-task-list"><a href="#GFM-task-list" class="headerlink" title="GFM task list"></a>GFM task list</h4><ul>
-<li style="list-style: none"><input type="checkbox" checked> GFM task list 1</li>
-<li style="list-style: none"><input type="checkbox" checked> GFM task list 2</li>
-<li style="list-style: none"><input type="checkbox"> GFM task list 3<ul>
-<li style="list-style: none"><input type="checkbox"> GFM task list 3-1</li>
-<li style="list-style: none"><input type="checkbox"> GFM task list 3-2</li>
-<li style="list-style: none"><input type="checkbox"> GFM task list 3-3</li>
-</ul>
-</li>
-<li style="list-style: none"><input type="checkbox"> GFM task list 4<ul>
-<li style="list-style: none"><input type="checkbox"> GFM task list 4-1</li>
-<li style="list-style: none"><input type="checkbox"> GFM task list 4-2</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="绘制表格-Tables"><a href="#绘制表格-Tables" class="headerlink" title="绘制表格 Tables"></a>绘制表格 Tables</h3><table>
-<thead>
-<tr>
-<th>项目</th>
-<th style="text-align:right">价格</th>
-<th style="text-align:center">数量</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>计算机</td>
-<td style="text-align:right">$1600</td>
-<td style="text-align:center">5</td>
-</tr>
-<tr>
-<td>手机</td>
-<td style="text-align:right">$12</td>
-<td style="text-align:center">12</td>
-</tr>
-<tr>
-<td>管线</td>
-<td style="text-align:right">$1</td>
-<td style="text-align:center">234</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>First Header</th>
-<th>Second Header</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Content Cell</td>
-<td>Content Cell</td>
-</tr>
-<tr>
-<td>Content Cell</td>
-<td>Content Cell</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>First Header</th>
-<th>Second Header</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Content Cell</td>
-<td>Content Cell</td>
-</tr>
-<tr>
-<td>Content Cell</td>
-<td>Content Cell</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>Function name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>help()</code></td>
-<td>Display the help window.</td>
-</tr>
-<tr>
-<td><code>destroy()</code></td>
-<td><strong>Destroy your computer!</strong></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">Left-Aligned</th>
-<th style="text-align:center">Center Aligned</th>
-<th style="text-align:right">Right Aligned</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">col 3 is</td>
-<td style="text-align:center">some wordy text</td>
-<td style="text-align:right">$1600</td>
-</tr>
-<tr>
-<td style="text-align:left">col 2 is</td>
-<td style="text-align:center">centered</td>
-<td style="text-align:right">$12</td>
-</tr>
-<tr>
-<td style="text-align:left">zebra stripes</td>
-<td style="text-align:center">are neat</td>
-<td style="text-align:right">$1</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>Item</th>
-<th style="text-align:right">Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Computer</td>
-<td style="text-align:right">$1600</td>
-</tr>
-<tr>
-<td>Phone</td>
-<td style="text-align:right">$12</td>
-</tr>
-<tr>
-<td>Pipe</td>
-<td style="text-align:right">$1</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h4 id="特殊符号-HTML-Entities-Codes"><a href="#特殊符号-HTML-Entities-Codes" class="headerlink" title="特殊符号 HTML Entities Codes"></a>特殊符号 HTML Entities Codes</h4><p>&copy; &amp;  &uml; &trade; &iexcl; &pound;<br>&amp; &lt; &gt; &yen; &euro; &reg; &plusmn; &para; &sect; &brvbar; &macr; &laquo; &middot;</p>
-<p>X&sup2; Y&sup3; &frac34; &frac14;  &times;  &divide;   &raquo;</p>
-<p>18&ordm;C  &quot;  &apos;</p>
-<p>[========]</p>
-<h3 id="Emoji表情-smiley"><a href="#Emoji表情-smiley" class="headerlink" title="Emoji表情 :smiley:"></a>Emoji表情 :smiley:</h3><blockquote>
-<p>Blockquotes :star:</p>
-</blockquote>
-<h4 id="GFM-task-lists-amp-Emoji-amp-fontAwesome-icon-emoji-amp-editormd-logo-emoji-editormd-logo-5x"><a href="#GFM-task-lists-amp-Emoji-amp-fontAwesome-icon-emoji-amp-editormd-logo-emoji-editormd-logo-5x" class="headerlink" title="GFM task lists &amp; Emoji &amp; fontAwesome icon emoji &amp; editormd logo emoji :editormd-logo-5x:"></a>GFM task lists &amp; Emoji &amp; fontAwesome icon emoji &amp; editormd logo emoji :editormd-logo-5x:</h4><ul>
-<li style="list-style: none"><input type="checkbox" checked> :smiley: @mentions, :smiley: #refs, <a href>links</a>, <strong>formatting</strong>, and <del>tags</del> supported :editormd-logo:;</li>
-<li style="list-style: none"><input type="checkbox" checked> list syntax required (any unordered or ordered list supported) :editormd-logo-3x:;</li>
-<li style="list-style: none"><input type="checkbox" checked> [ ] :smiley: this is a complete item :smiley:;</li>
-<li style="list-style: none"><input type="checkbox"> []this is an incomplete item <a href="#">test link</a> :fa-star: @pandao;</li>
-<li style="list-style: none"><input type="checkbox"> [ ]this is an incomplete item :fa-star: :fa-gear:;<ul>
-<li style="list-style: none"><input type="checkbox"> :smiley: this is an incomplete item <a href="#">test link</a> :fa-star: :fa-gear:;</li>
-<li style="list-style: none"><input type="checkbox"> :smiley: this is  :fa-star: :fa-gear: an incomplete item <a href="#">test link</a>;</li>
-</ul>
-</li>
-</ul>
-<h4 id="反斜杠-Escape"><a href="#反斜杠-Escape" class="headerlink" title="反斜杠 Escape"></a>反斜杠 Escape</h4><p>*literal asterisks*</p>
-<p>[========]</p>
-<h3 id="科学公式-TeX-KaTeX"><a href="#科学公式-TeX-KaTeX" class="headerlink" title="科学公式 TeX(KaTeX)"></a>科学公式 TeX(KaTeX)</h3><p>$$E=mc^2$$</p>
-<p>行内的公式$$E=mc^2$$行内的公式，行内的$$E=mc^2$$公式。</p>
-<p>$$x &gt; y$$</p>
-<p>$$(\sqrt{3x-1}+(1+x)^2)$$</p>
-<p>$$\sin(\alpha)^{\theta}=\sum_{i=0}^{n}(x^i + \cos(f))$$</p>
-<p>多行公式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">\displaystyle</span><br><span class="line">\left( \sum\_&#123;k=1&#125;^n a\_k b\_k \right)^2</span><br><span class="line">\leq</span><br><span class="line">\left( \sum\_&#123;k=1&#125;^n a\_k^2 \right)</span><br><span class="line">\left( \sum\_&#123;k=1&#125;^n b\_k^2 \right)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">\displaystyle</span><br><span class="line">    \frac&#123;1&#125;&#123;</span><br><span class="line">        \Bigl(\sqrt&#123;\phi \sqrt&#123;5&#125;&#125;-\phi\Bigr) e^&#123;</span><br><span class="line">        \frac25 \pi&#125;&#125; = 1+\frac&#123;e^&#123;-2\pi&#125;&#125; &#123;1+\frac&#123;e^&#123;-4\pi&#125;&#125; &#123;</span><br><span class="line">        1+\frac&#123;e^&#123;-6\pi&#125;&#125;</span><br><span class="line">        &#123;1+\frac&#123;e^&#123;-8\pi&#125;&#125;</span><br><span class="line">         &#123;1+\cdots&#125; &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f(x) = \int_&#123;-\infty&#125;^\infty</span><br><span class="line">    \hat f(\xi)\,e^&#123;2 \pi i \xi x&#125;</span><br><span class="line">    \,d\xi</span><br></pre></td></tr></table></figure>
-<h3 id="分页符-Page-break"><a href="#分页符-Page-break" class="headerlink" title="分页符 Page break"></a>分页符 Page break</h3><blockquote>
-<p>Print Test: Ctrl + P</p>
-</blockquote>
-<p>[========]</p>
-<h3 id="绘制流程图-Flowchart"><a href="#绘制流程图-Flowchart" class="headerlink" title="绘制流程图 Flowchart"></a>绘制流程图 Flowchart</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">st=&gt;start: 用户登陆</span><br><span class="line">op=&gt;operation: 登陆操作</span><br><span class="line">cond=&gt;condition: 登陆成功 Yes or No?</span><br><span class="line">e=&gt;end: 进入后台</span><br><span class="line"></span><br><span class="line">st-&gt;op-&gt;cond</span><br><span class="line">cond(yes)-&gt;e</span><br><span class="line">cond(no)-&gt;op</span><br></pre></td></tr></table></figure>
-<p>[========]</p>
-<h3 id="绘制序列图-Sequence-Diagram"><a href="#绘制序列图-Sequence-Diagram" class="headerlink" title="绘制序列图 Sequence Diagram"></a>绘制序列图 Sequence Diagram</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Andrew-&gt;China: Says Hello</span><br><span class="line">Note right of China: China thinks\nabout it</span><br><span class="line">China--&gt;Andrew: How are you?</span><br><span class="line">Andrew-&gt;&gt;China: I am good thanks!</span><br></pre></td></tr></table></figure>
-<h3 id="End"><a href="#End" class="headerlink" title="End"></a>End</h3>
+            <p>用户管理命令<br>id<br>　作用：查看指定用户的用户id,基本组id,附加组id<br>su<br>　作用：切换用户<br>　　su 用户名<br>　　su - 用户名<br>　　su和su - 的区别：前者不切换工作目录<br>passwd<br>　作用：解锁／锁定用户，设置／清除密码。如果不指定用户名，则为对当前用户操作。（注意只能指定用户名）<br>　-u：解锁，解锁会使密码清空，强制解锁需-uf<br>　-l：锁定用户，锁定后无法以该用户身份登录系统（root除外）<br>　-e：让用户密码过期<br>　-d：删除用户密码<br>　–stdin：设置密码，用法: echo “密码“ | passwd –stdin “用户名”<br>useradd<br>　作用：创建用户<br>　　-g:指定基本组<br>　　-G:指定附加组<br>　　-u:指定用户id<br>　　-r:创建系统用户<br>　　-s:指定shell类型（可登录/bin/bash，不可登录/sbin/nologin）<br>　　-o:允许uid相同<br>usermod<br>　作用：修改用户信息<br>　　-u:更改用户id<br>　　-s:更改shell<br>　　-g:更改基本组<br>　　-G:更改附加组,可以同时增加多个（用逗号隔开）<br>　　-l:更改用户名<br>　　-d:更改家目录<br>　　-m:将原来家目录中的内容搬到新的家目录中（有-d才会用到）<br>　　-e:加上密码有效期(日期格式为MM/DD/YY,不填表示永久有效)<br>　　-p:更改密码<br>userdel<br>　作用：删除用户，加个-r选项会把该用户的家目录也删除<br>groupadd<br>　作用：创建用户组<br>　　-g:指定gid<br>　　-o:允许gid相同<br>groupmod<br>　作用：修改用户组<br>groupdel<br>　作用：删除用户组<br>用户分类<br>管理员UID为0：系统的管理员用户。<br>系统用户UID为1～999： Linux系统为了避免因某个服务程序出现漏洞而被黑客提权至整台服务器，默认服务程序会有独立的系统用户负责运行，进而有效控制被破坏范围。<br>普通用户UID从1000开始：1000-60000（自定义uid最大4294967294）是由管理员创建的用于日常工作的用户。<br>系统用户的特点<br>因为不需要登录，所以shell类型通常为/sbin/nologin<br>系统用户没有家目录<br>系统用户id通常是小于1000<br>习题<br>批量创建100个用户，user【1..100】，并设置8位随机密码。</p>
+<p>###<em>答案：</em><br>创建：vim useradd.sh<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#! /bin/bash</span><br><span class="line">for i in &#123;1..100&#125;</span><br><span class="line">do</span><br><span class="line">	pass=`echo $RANDOM|md5sum|cut -c 1-8` #生成随机8位密码(注意反引号)</span><br><span class="line">	useradd user$i		#添加用户</span><br><span class="line">	echo &quot;$pass&quot; | passwd --stdin &quot;user$i&quot;    #设置密码</span><br><span class="line">	echo &quot;用户：user$i \n密码：$pass&quot; &gt;&gt; ~/password	#保存用户名密码到password文件中</span><br><span class="line">done</span><br></pre></td></tr></table></figure></p>
+<p>执行：bash useradd.sh</p>
+
           
         
       
@@ -1661,7 +1801,7 @@ Disconnected from remote host(172.20.10.6) at 13:11:32.
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>

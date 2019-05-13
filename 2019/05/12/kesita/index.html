@@ -98,14 +98,14 @@
 
   <meta name="description" content="#Linux高级命令进阶  重定向 &amp;gt; 与 追加重定向 &amp;gt;&amp;gt;  ○ &amp;gt; 将输出结果写入到文件中（覆盖保存，原来的内容就没了）  ○ &amp;gt;&amp;gt;  将输出结果写入到文件中（保留原内容并追加在文件最后面）  ○ 所有有输出结果的指令都能通过重定向写入文件，如： echo hello &amp;gt; 123    将hello写入文件 ls ~/123 &amp;gt; 123">
 <meta property="og:type" content="article">
-<meta property="og:title" content="kesita">
+<meta property="og:title" content="rua！">
 <meta property="og:url" content="http://yoursite.com/2019/05/12/kesita/index.html">
 <meta property="og:site_name" content="rua！">
 <meta property="og:description" content="#Linux高级命令进阶  重定向 &amp;gt; 与 追加重定向 &amp;gt;&amp;gt;  ○ &amp;gt; 将输出结果写入到文件中（覆盖保存，原来的内容就没了）  ○ &amp;gt;&amp;gt;  将输出结果写入到文件中（保留原内容并追加在文件最后面）  ○ 所有有输出结果的指令都能通过重定向写入文件，如： echo hello &amp;gt; 123    将hello写入文件 ls ~/123 &amp;gt; 123">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-12T04:18:34.189Z">
+<meta property="og:updated_time" content="2019-05-12T05:37:49.983Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="kesita">
+<meta name="twitter:title" content="rua！">
 <meta name="twitter:description" content="#Linux高级命令进阶  重定向 &amp;gt; 与 追加重定向 &amp;gt;&amp;gt;  ○ &amp;gt; 将输出结果写入到文件中（覆盖保存，原来的内容就没了）  ○ &amp;gt;&amp;gt;  将输出结果写入到文件中（保留原内容并追加在文件最后面）  ○ 所有有输出结果的指令都能通过重定向写入文件，如： echo hello &amp;gt; 123    将hello写入文件 ls ~/123 &amp;gt; 123">
 
 
@@ -124,7 +124,7 @@
   };
 </script>
 
-  <title>kesita | rua！</title>
+  <title> | rua！</title>
   
 
 
@@ -306,7 +306,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">kesita
+          <h1 class="post-title" itemprop="name headline">
 
               
             
@@ -332,13 +332,9 @@
                 
               
 
-              <time title="Created: 2019-05-12 12:18:07 / Modified: 12:18:34" itemprop="dateCreated datePublished" datetime="2019-05-12T12:18:07+08:00">2019-05-12</time>
+              <time title="Created: 2019-05-12 13:37:49" itemprop="dateCreated datePublished" datetime="2019-05-12T13:37:49+08:00">2019-05-12</time>
             
 
-            
-              
-
-              
             
           </span>
 
@@ -384,12 +380,15 @@ ls ~/123 &gt; 123       将123目录下的文件列表写入文件
 <pre><code>cat /etc/passwd | wc -l
 -21 
 </code></pre></li>
-<li><p>通配符<br>  *： 表示匹配0或者多个<br>  ？： 表示匹配单个字符,该字符必须存在<br>  [0-9]: 表示匹配0-9之间的一个数字</p>
-<pre><code>[123]: 表示匹配1或者2或者3
-</code></pre><p>  [a-z]: 表示匹配a-z之间的一个字母</p>
-<pre><code>[abc]: 表示匹配a或者b或者c
-</code></pre><p>  [0-9a-z]：匹配到一个字符，是数字或小写字母</p>
-</li>
+</ul>
+<blockquote>
+<p>####小脚本time：(目前还不太明白如何操作)</p>
+</blockquote>
+<p>怎么统计访问网址的前5个ip<br><code>cat  /var/log/httpd/access_log |  awk -F “ ” &#39;{printy $1}&#39; | sort  | uniq -c  | sort -rn |  head -1</code></p>
+<ul>
+<li>通配符<br>  *： 表示匹配0或者多个<br>  ？： 表示匹配单个字符,该字符必须存在<br>  [0-9]: 表示匹配0-9之间的一个数字<pre><code>[123]: 表示匹配1或者2或者3
+</code></pre>  [a-z]: 表示匹配a-z之间的一个字母<pre><code>[abc]: 表示匹配a或者b或者c
+</code></pre>  [0-9a-z]：匹配到一个字符，是数字或小写字母</li>
 <li><p>引号的作用<br>  单引号：所见即所得<br>  双引号：解释变量<br>  反引号：执行命令<br>  如： name = <code>ls</code>    加反引号name=ls输出的内容 不加反引号就是name=ls</p>
 <pre><code>&apos; $name &apos;输出  $name
 &quot; $name &quot;输出   xxx （ls的输出）
@@ -449,8 +448,8 @@ this is $name
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/11/costa/" rel="next" title="costa">
-                <i class="fa fa-chevron-left"></i> costa
+              <a href="/2019/05/12/miaomiaomiao/" rel="next" title="miaomiaomiao">
+                <i class="fa fa-chevron-left"></i> miaomiaomiao
               </a>
             
           </div>
@@ -458,6 +457,10 @@ this is $name
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/13/dogee/" rel="prev" title="dogee">
+                dogee <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -517,7 +520,7 @@ this is $name
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>

@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="多用户与用户组的概念由于Linux是多用户、多任务的操作系统，因此可能常常有多人同时在某台主机上工作，如果不区分用户的权限，某个人的文档所有人都能看到，非常的不安全。因此，在Linux上文件的权限设定是非常重要的。  ls -l看到的文件权限信息我们以前学过，输入ls -l或者ll 可以查看文件的详细信息，其内容如下：  其实这里的“档案类型权限”，“档案拥有者”，“档案所属群组”三个部分就是该文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="权限管理">
+<meta property="og:url" content="http://yoursite.com/2019/05/13/权限管理/index.html">
+<meta property="og:site_name" content="rua！">
+<meta property="og:description" content="多用户与用户组的概念由于Linux是多用户、多任务的操作系统，因此可能常常有多人同时在某台主机上工作，如果不区分用户的权限，某个人的文档所有人都能看到，非常的不安全。因此，在Linux上文件的权限设定是非常重要的。  ls -l看到的文件权限信息我们以前学过，输入ls -l或者ll 可以查看文件的详细信息，其内容如下：  其实这里的“档案类型权限”，“档案拥有者”，“档案所属群组”三个部分就是该文">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-13T11:52:05.450Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="权限管理">
+<meta name="twitter:description" content="多用户与用户组的概念由于Linux是多用户、多任务的操作系统，因此可能常常有多人同时在某台主机上工作，如果不区分用户的权限，某个人的文档所有人都能看到，非常的不安全。因此，在Linux上文件的权限设定是非常重要的。  ls -l看到的文件权限信息我们以前学过，输入ls -l或者ll 可以查看文件的详细信息，其内容如下：  其实这里的“档案类型权限”，“档案拥有者”，“档案所属群组”三个部分就是该文">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/05/13/权限管理/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>权限管理 | rua！</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">rua！</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/13/权限管理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="科斯塔的学习私塾">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rua！">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">权限管理
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-05-13 19:50:36 / Modified: 19:52:05" itemprop="dateCreated datePublished" datetime="2019-05-13T19:50:36+08:00">2019-05-13</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>多用户与用户组的概念<br>由于Linux是多用户、多任务的操作系统，因此可能常常有多人同时在某台主机上工作，如果不区分用户的权限，某个人的文档所有人都能看到，非常的不安全。因此，在Linux上文件的权限设定是非常重要的。</p>
+<ol>
+<li>ls -l看到的文件权限信息<br>我们以前学过，输入ls -l或者ll 可以查看文件的详细信息，其内容如下：</li>
+</ol>
+<p>其实这里的“档案类型权限”，“档案拥有者”，“档案所属群组”三个部分就是该文件的权限信息，下面我们来依次介绍一下。</p>
+<ol>
+<li>权限的类别</li>
+</ol>
+<p>在Linux中分别有读、写、执行权限：<br>读权限：<br>　　对于目录来说，读权限影响用户是否能够列出目录结构<br>　　对于文件来说，读权限影响用户是否可以查看文件内容<br>写权限：<br>　　对于目录来说，写权限影响用户是否可以在该目录下“创建/删除/复制/移动”文档<br>　　对于文件来说，写权限影响用户是否可以编辑文件内容<br>执行权限：<br>　　对于目录来说：执行权限影响用户是否可以执行cd操作<br>　　对于文件来说，特别是脚本文件，执行权限影响文件是否可以运行<br>除了这三个普通权限以外，还有三个特殊权限—— SUID, SGID, SBIT。<br>…<br>SUID<br>限定条件：只能设置在二进制可执行程序上面。对目录设置无效。<br>作用：设置此权限后，本来只对该文件有执行权限的用户，在执行该文件时，会临时获得其拥有者的权限。<br>设置方法：chmod u+s 文件名<br>注意：suid这个权限是记录在十位字符的第四位上的<br>鸟哥详解：<br>我們的 Linux 系統中，所有帳號的密碼都記錄在 /etc/shadow 這個檔案裡面，這個檔案的權限為：『———- 1 root root』，意思是這個檔案僅有root可讀且僅有root可以強制寫入而已。 既然這個檔案僅有 root 可以修改，那麼鳥哥的 dmtsai 這個一般帳號使用者能否自行修改自己的密碼呢？ 你可以使用你自己的帳號輸入『passwd』這個指令來看看，嘿嘿！一般使用者當然可以修改自己的密碼了！<br>唔！有沒有衝突啊！明明 /etc/shadow 就不能讓 dmtsai 這個一般帳戶去存取的，為什麼 dmtsai 還能夠修改這個檔案內的密碼呢？ 這就是 SUID 的功能啦！藉由上述的功能說明，我們可以知道<br>dmtsai 對於 /usr/bin/passwd 這個程式來說是具有 x 權限的，表示 dmtsai 能執行 passwd；<br>passwd 的擁有者是 root 這個帳號；<br>dmtsai 執行 passwd 的過程中，會『暫時』獲得 root 的權限；<br>/etc/shadow 就可以被 dmtsai 所執行的 passwd 所修改。<br>但如果 dmtsai 使用 cat 去讀取 /etc/shadow 時，他能夠讀取嗎？因為 cat 不具有 SUID 的權限，所以 dmtsai 執行 『cat /etc/shadow』 時，是不能讀取 /etc/shadow 的。<br>SGID<br>限定条件：可对二进制可执行程序和目录设置。<br>作用：<br>对二进制可执行文件：本来只对该文件有执行权限的用户，在执行该文件时，会临时获得其所属用户组的权限。<br>对目录文件：在设置了SGID权限的目录下建立文件时，新创建的文件的所属用户组会和该目录的所属用户组相同。<br>设置方法：chmod g+s 文件名<br>注意：sgid这个权限是记录在十位字符的第七位上的。<br>SBIT<br>限定条件：只能对目录设置。<br>作用：设置了SBIT权限的目录下，用户只能对自己创建的文件和目录进行删除/改名/移动的操作，无法删除其他用户的文件。<br>设置方法：chmod o+t 文件名<br>注意：sbit这个权限是记录在十位字符的第十位上的。<br>补充：关于文件扩展权限ACL<br>扩展ACL ：access control list<br>例：文件a.txt的权限为：- rwx r– r–<br>ken为其他人，不属于a.txt的用户组，该如何只对ken一个用户设置rwx权限？<br>答：使用扩展ACL（开后门x）命令为：setfacl -m u:ken:rwx a.txt</p>
+<ol>
+<li>用户的类别<br>· 拥有者<br>创建这个文件的用户的名字<br>· 所属用户组<br>创建这个文件的用户所属的用户组，但是拥有者的属组可能不止一个，这里记录的是它的基本组<br>· 其他人<br>除去上面提到的那些人剩余的所有用户<br>设置读写权限——chmod命令</li>
+<li>通过字母设置<br>命令<br>给谁设置<br>分配方式<br>参数<br>chmod<br>u：拥有者<br>g：用户组<br>o：其他人<br>a：所有人（a可省略）<br>+：添加权限<br>-：删除权限<br>=：参数填啥就有啥权限<br>r：读<br>w：写<br>x：执行<br>示例：<br>给ken文件设置权限，对 拥有者 添加 执行权限：chmod u+x ken<br>给ken文件设置权限，对 用户组 去掉 写权限：chmod g-w ken<br>给ken文件设置权限，对 所有人 设置 读写权限：chmod =rw ken 或 chmod a=rw ken</li>
+<li>通过数字设置<br>将r，w，x三种权限与数字进行对应：<br>类型<br>对应值<br>r<br>4<br>w<br>2<br>x<br>1<br>-<br>0<br>然后，用三位数字分别表示拥有者，用户组，其他人的权限，如766表示：<br>拥有者：4+2+1=7 拥有读，写，执行权限<br>用户组：4+2=6 拥有读，写，没有执行权限<br>其他人：4+2=6 拥有读，写，没有执行权限<br>使用数字进行设置时需注意：一般写和读是配对出现的，有读权限可以没有写，但有写权限的一般会有读权限，所以请注意不要出现2，3之类的数字！（1是会有的，比如目录的其他人权限一般就是1）<br>补充：通过四位数设置特殊权限，只设置普通权限的话是用3位数字，如果想设置特殊类型的话，可以在最左边再加一位，用来设置特殊类型，对应数值如下：<br>| 类型 | 对应值 |<br>| —– | —–|<br>| SUID | 4 |<br>| SGID | 2 |<br>| SBIT | 1 |<br>如：chmod 4755 test<br>此时文件test的权限为：- rws r-x r-x<br>可见SUID权限设置成功~<br>设置拥有者和用户组</li>
+<li>改变拥有者——chown命令<br>格式：chown [-R] 新的拥有者名：新的用户组名 在操作的文件名<br>-R 表示对目录下的所有文件进行操作<br>如果你不想更改用户组，冒号和用户组名不用写<br>例如：将test.txt文件的拥有者改为doge<br>答案：chown doge test.txt</li>
+<li>改变所属用户组——chgrp命令<br>格式：chgrp [-R] 新的所属用户组名 在操作的文件名<br>-R 表示对目录下的所有文件进行操作<br>例如：将文件test.txt的用户组更改为nimei<br>答案：chgrp nimei test.txt<br>其实此命令用的很少，因为使用chown也能够更改用户组。<br>3.最后，sudo命令<br>作用：来以其他身份来执行命令，预设的身份为root<br>sudo配置文件：/etc/sudoers<br>该文件为只读，请使用visudo命令进行修改。</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/13/yui/" rel="next" title>
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">科斯塔的学习私塾</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">科斯塔的学习私塾</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
