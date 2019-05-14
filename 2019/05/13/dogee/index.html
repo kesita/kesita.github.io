@@ -103,10 +103,12 @@
 <meta property="og:site_name" content="rua！">
 <meta property="og:description" content="#at一次性计划任务  安装atyum install at -y  启动at服务systemctl restart  atd  设置at一次性计划任务   ####举个栗子：  10:05的时候再tmp下创建一个ken文件[root@localhost:~] at 10:05at&amp;gt; touch /tmp/kenat&amp;gt; ＜EOT＞&amp;#8195;&amp;#8195;      &amp;#8195;">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-13T11:59:03.456Z">
+<meta property="og:image" content="http://d.birdteam.net/data/f_25434698.jpg">
+<meta property="og:updated_time" content="2019-05-14T00:58:16.740Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="dogee">
 <meta name="twitter:description" content="#at一次性计划任务  安装atyum install at -y  启动at服务systemctl restart  atd  设置at一次性计划任务   ####举个栗子：  10:05的时候再tmp下创建一个ken文件[root@localhost:~] at 10:05at&amp;gt; touch /tmp/kenat&amp;gt; ＜EOT＞&amp;#8195;&amp;#8195;      &amp;#8195;">
+<meta name="twitter:image" content="http://d.birdteam.net/data/f_25434698.jpg">
 
 
 
@@ -332,12 +334,24 @@
                 
               
 
-              <time title="Created: 2019-05-13 19:37:46 / Modified: 19:59:03" itemprop="dateCreated datePublished" datetime="2019-05-13T19:37:46+08:00">2019-05-13</time>
+              <time title="Created: 2019-05-13 19:37:46" itemprop="dateCreated datePublished" datetime="2019-05-13T19:37:46+08:00">2019-05-13</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-14 08:58:16" itemprop="dateModified" datetime="2019-05-14T08:58:16+08:00">2019-05-14</time>
               
             
           </span>
@@ -429,49 +443,21 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight plain"><figcaption><span>* * * *</span><a href="/usr/bin/echo">123 >> /tmp/ken```</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">2. 删除计划任务</span><br><span class="line"> `crontab -r`  #删除所有的计划任务</span><br></pre></td></tr></table></figure>
-<p>[root@ken ~]# crontab -e</p>
-<ul>
-<li><ul>
-<li><ul>
-<li><ul>
-<li><ul>
-<li>/usr/bin/echo 123 &gt;&gt; /tmp/ken</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><ul>
-<li><ul>
-<li><ul>
-<li><ul>
-<li>/usr/bin/echo <code>date “+%F \%T”</code> &gt;&gt; /tmp/ken<br>[root@ken ~]# crontab -r<br>[root@ken ~]# crontab -l<br>no crontab for root<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">##*crontab最小执行单位是分钟*</span><br><span class="line"> </span><br><span class="line">[root@ken ~]# vim /etc/crontab</span><br><span class="line">SHELL=/bin/bash                              #指定shell类型</span><br><span class="line">PATH=/sbin:/bin:/usr/sbin:/usr/bin     #crontab命令执行路径</span><br><span class="line">MAILTO=root      #发送邮件到/var/spool/mail/root</span><br><span class="line"></span><br><span class="line">###*鸟哥讲几句：5个星号，4个符号*</span><br><span class="line"></span><br><span class="line">![](http://d.birdteam.net/data/f_25434698.jpg)</span><br><span class="line"></span><br><span class="line">`crontab -e`是针对用户的，如果想针对系统进行计划任务的话，</span><br><span class="line">直接用root账号去`vim /etc/crontab` 进行设置。</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>[root@ken ~]# vim /etc/crontab<br>SHELL=/bin/bash                             #指定shell类型<br>PATH=/sbin:/bin:/usr/sbin:/usr/bin          #crontab命令执行路径<br>MAILTO=root                      #如果有错会发送邮件到/var/spool/mail/root</p>
+<p><code>#* * * * * /usr/bin/echo 123 &gt;&gt; /tmp/ken</code></p>
+<ol start="2">
+<li>删除计划任务<br><code>crontab -r</code>  #删除所有的计划任务</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@ken ~]# crontab -e</span><br><span class="line">* * * * * /usr/bin/echo 123 &gt;&gt; /tmp/ken</span><br><span class="line">* * * * * /usr/bin/echo `date “+%F \%T”` &gt;&gt; /tmp/ken</span><br><span class="line">[root@ken ~]# crontab -r</span><br><span class="line">[root@ken ~]# crontab -l</span><br><span class="line">no crontab for root</span><br></pre></td></tr></table></figure>
+<p>##<em>crontab最小执行单位是分钟</em></p>
+<p>[root@ken ~]# vim /etc/crontab<br>SHELL=/bin/bash                              #指定shell类型<br>PATH=/sbin:/bin:/usr/sbin:/usr/bin     #crontab命令执行路径<br>MAILTO=root      #发送邮件到/var/spool/mail/root</p>
+<p>###<em>鸟哥讲几句：5个星号，4个符号</em></p>
+<p><img src="http://d.birdteam.net/data/f_25434698.jpg" alt></p>
+<p><code>crontab -e</code>是针对用户的，如果想针对系统进行计划任务的话，<br>直接用root账号去<code>vim /etc/crontab</code> 进行设置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@ken ~]# vim /etc/crontab</span><br><span class="line">SHELL=/bin/bash                             #指定shell类型</span><br><span class="line">PATH=/sbin:/bin:/usr/sbin:/usr/bin          #crontab命令执行路径</span><br><span class="line">MAILTO=root                      #如果有错会发送邮件到/var/spool/mail/root</span><br></pre></td></tr></table></figure></p>
 <h1 id="For-details-see-man-4-crontabs"><a href="#For-details-see-man-4-crontabs" class="headerlink" title="For details see man 4 crontabs"></a>For details see man 4 crontabs</h1><h1 id="Example-of-job-definition"><a href="#Example-of-job-definition" class="headerlink" title="Example of job definition:"></a>Example of job definition:</h1><h1 id="—————-minute-0-–-59"><a href="#—————-minute-0-–-59" class="headerlink" title=".—————- minute (0 – 59)"></a>.—————- minute (0 – 59)</h1><h1 id="————-hour-0-–-23"><a href="#————-hour-0-–-23" class="headerlink" title="| .————- hour (0 – 23)"></a>| .————- hour (0 – 23)</h1><h1 id="———-day-of-month-1-–-31"><a href="#———-day-of-month-1-–-31" class="headerlink" title="| | .———- day of month (1 – 31)"></a>| | .———- day of month (1 – 31)</h1><h1 id="——-month-1-–-12-OR-jan-feb-mar-apr-…"><a href="#——-month-1-–-12-OR-jan-feb-mar-apr-…" class="headerlink" title="| | | .——- month (1 – 12) OR jan,feb,mar,apr …"></a>| | | .——- month (1 – 12) OR jan,feb,mar,apr …</h1><h1 id="—-day-of-week-0-–-6-Sunday-0-or-7-OR-sun-mon-tue-wed-thu-fri-sat"><a href="#—-day-of-week-0-–-6-Sunday-0-or-7-OR-sun-mon-tue-wed-thu-fri-sat" class="headerlink" title="| | | | .—- day of week (0 – 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat"></a>| | | | .—- day of week (0 – 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat</h1><h1 id><a href="#" class="headerlink" title="| | | | |"></a>| | | | |</h1><h1 id="user-name-command-to-be-executed"><a href="#user-name-command-to-be-executed" class="headerlink" title="    * user-name command to be executed"></a><em> </em> <em> </em> * user-name command to be executed</h1><p><code>`</code></p>
 <p>#习题：</p>
 <ol>
 <li><p>每月1、10、22日的4:45重启network服务<br>2：每周六、周日的1:10重启network服务<br>3：每天18:00至23:00之间每隔30分钟重启network服务<br>4：每隔两天的上午8点到11点的第3和第15分钟执行一次重启<br>5：每周日凌晨2点30分，运行cp命令对/etc/fstab文件进行备份，存储位置为/backup/fstab-YYYY-MM-DD-hh-mm-ss；<br>6：一月一号的4点重启smb<br>7：晚上11点到早上7点之间，每隔一小时重启smb<br>8：每一小时重启smb</p>
 <pre><code>&lt;!-- more --&gt;
-
-&lt;!-- more --&gt;
-
-&lt;!-- more --&gt;
-
-&lt;!-- more --&gt;
 </code></pre></li>
 </ol>
 <p>#答案：<br>1.45 4 1,10,22 <em> </em> /usr/bin/systemctl restart networ<br>2.10 1 <em> </em> 6,7 /usr/bin/systemctl restart network<br>3.<em>/30 18-23 </em> <em> </em> /usr/bin/systemctl restart network<br>4.3,15 8-11 <em>/2 </em> <em> /usr/sbin/reboot<br>5.30 2 </em> <em> 7 /usr/bin/cp /etc/fstab /tmp/fstab-<code>date “+\%F_\%T”</code><br>6.正确答案; 0 4 1 1 </em> /usr/bin/systemctl restart smb   #4点钟只执行一次命令<br>错误答案：<em> 4 1 1 </em> /usr/bin/systemctl restart smb   #四点钟执行了60次命令<br>7.0 23-0/1,1-7/1 <em> </em> <em> /usr/bin/systemctl restart smb<br>0 23,1,3,5,7  </em> <em> </em> /usr/bin/systemctl restart smb<br>8.0 <em> </em> <em> </em> /usr/bin/systemctl restart smb</p>
